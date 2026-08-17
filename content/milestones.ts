@@ -40,6 +40,11 @@ export const milestones: Milestone[] = [
         alt: "Thenperson em complexo industrial de mineração, durante período de trabalho fora do Vale, com cordão de identificação no pescoço.",
         source: "arquivo-pessoal",
       },
+            {
+        src: "/images/arquivo-pessoal/arquivo-pessoal-01.jpg",
+        alt: "Thenperson em complexo industrial de mineração, durante período de trabalho fora do Vale, com cordão de identificação no pescoço, junto com 2 amigos.",
+        source: "arquivo-pessoal",
+      },
     ],
   },
   {
