@@ -8,9 +8,9 @@ import { site } from "@/content/site";
 
 export function QuerSaberMais() {
   return (
-    <section id="quer-saber-mais" className="bg-bg-dark-alt py-24">
+    <section id="quer-saber-mais" className="bg-primary py-24">
       <Container className="flex flex-col items-center text-center">
-        <p className="font-body text-eyebrow uppercase text-accent">Quer saber mais?</p>
+        <p className="font-body text-eyebrow uppercase text-accent-light">Quer saber mais?</p>
         <h2 className="mt-3 max-w-xl font-heading text-h2 font-extrabold text-text-inverse">
           Entra no grupo — vai que você gosta das minhas ideias.
         </h2>

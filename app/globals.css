@@ -1,26 +1,33 @@
 @import "tailwindcss";
 
 :root {
-  --color-primary: #f25316;
-  --color-primary-dark: #c13c0b;
-  --color-primary-light: #ff8a5b;
-  --color-secondary: #0e3b80;
-  --color-secondary-dark: #082a5e;
-  --color-accent: #00a8b4;
-  --color-accent-dark: #00808a;
+  /* Base (azul) — fundo padrão das seções escuras / hero e rodapé */
+  --color-primary: #0e3b80;
+  --color-primary-dark: #06214f;
+  --color-primary-light: #3d74c8;
+
+  /* Detalhe (laranja) — ação, botões, números */
+  --color-accent: #f25316;
+  --color-accent-dark: #c13c0b;
+  --color-accent-light: #ff8a5b;
+
+  /* Marcador (ciano) */
+  --color-marker: #00a8b4;
+  --color-marker-dark: #00808a;
 
   --color-bg: #ffffff;
-  --color-bg-muted: #f7f3f0;
-  --color-bg-dark: #3a0c02;
-  --color-bg-dark-alt: #25201e;
+  --color-bg-muted: #f1f4fa;
 
-  --color-text: #1c1614;
-  --color-text-muted: #6b605a;
+  --color-text: #10192b;
+  --color-text-muted: #5a667e;
   --color-text-inverse: #ffffff;
-  --color-text-on-primary: #1c1614;
-  --color-border: #e5dcd6;
-  --color-cta: var(--color-primary);
-  --color-cta-hover: var(--color-primary-dark);
+  --color-text-on-accent: #10192b;
+
+  --color-border: #dde3ee;
+  --color-border-dark: #1b4f9e;
+
+  --color-cta: var(--color-accent);
+  --color-cta-hover: var(--color-accent-dark);
   --color-focus: #00a8b4;
 
   --color-party-orange: #d07900;
@@ -34,7 +41,7 @@
 
   --radius-card: 4px;
   --radius-pill: 999px;
-  --shadow-floating: 0 16px 40px -12px rgba(28, 22, 20, 0.45);
+  --shadow-floating: 0 16px 40px -12px rgba(16, 25, 43, 0.45);
 
   --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -55,21 +62,21 @@
   --color-primary: var(--color-primary);
   --color-primary-dark: var(--color-primary-dark);
   --color-primary-light: var(--color-primary-light);
-  --color-secondary: var(--color-secondary);
-  --color-secondary-dark: var(--color-secondary-dark);
   --color-accent: var(--color-accent);
   --color-accent-dark: var(--color-accent-dark);
+  --color-accent-light: var(--color-accent-light);
+  --color-marker: var(--color-marker);
+  --color-marker-dark: var(--color-marker-dark);
 
   --color-bg: var(--color-bg);
   --color-bg-muted: var(--color-bg-muted);
-  --color-bg-dark: var(--color-bg-dark);
-  --color-bg-dark-alt: var(--color-bg-dark-alt);
 
   --color-text: var(--color-text);
   --color-text-muted: var(--color-text-muted);
   --color-text-inverse: var(--color-text-inverse);
-  --color-text-on-primary: var(--color-text-on-primary);
+  --color-text-on-accent: var(--color-text-on-accent);
   --color-border: var(--color-border);
+  --color-border-dark: var(--color-border-dark);
   --color-cta: var(--color-cta);
   --color-cta-hover: var(--color-cta-hover);
   --color-focus: var(--color-focus);
@@ -146,8 +153,8 @@ section[id] {
 }
 
 ::selection {
-  background: var(--color-primary);
-  color: var(--color-text-on-primary);
+  background: var(--color-accent);
+  color: var(--color-text-on-accent);
 }
 
 .custom-cursor-active,

@@ -5,8 +5,8 @@ export type ButtonVariant = "primary" | "secondary" | "outline-inverse";
 export type ButtonSize = "md" | "sm";
 
 export const BUTTON_VARIANT_CLASSES: Record<ButtonVariant, string> = {
-  primary: "bg-cta text-text-on-primary hover:bg-cta-hover",
-  secondary: "bg-secondary text-text-inverse hover:bg-secondary-dark",
+  primary: "bg-cta text-text-on-accent hover:bg-cta-hover",
+  secondary: "bg-primary text-text-inverse hover:bg-primary-dark",
   "outline-inverse":
     "border-2 border-text-inverse/50 text-text-inverse hover:bg-text-inverse hover:text-text",
 };

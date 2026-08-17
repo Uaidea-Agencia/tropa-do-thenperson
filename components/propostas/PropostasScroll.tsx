@@ -120,7 +120,7 @@ function PainelParada({ parada, index, total, reducedMotion }: Readonly<PainelPa
             {SUB_REGIAO_LABEL[parada.subRegiao]}
           </Badge>
           <div className="mt-4 flex items-center gap-3">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-card bg-secondary text-text-inverse">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-card bg-primary text-text-inverse">
               <Icon size={22} aria-hidden="true" />
             </span>
             <h3 className="font-heading text-h3 font-bold text-text">{parada.titulo}</h3>
@@ -233,7 +233,7 @@ function MobileCarousel({ reducedMotion, onNavigate }: Readonly<MobileCarouselPr
                 {SUB_REGIAO_LABEL[parada.subRegiao]}
               </Badge>
               <div className="mt-4 flex items-center gap-3">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-card bg-secondary text-text-inverse">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-card bg-primary text-text-inverse">
                   <Icon size={22} aria-hidden="true" />
                 </span>
                 <h3 className="font-heading text-h3 font-bold text-text">{parada.titulo}</h3>

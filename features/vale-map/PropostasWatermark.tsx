@@ -47,7 +47,7 @@ export function PropostasWatermark() {
   return (
     <p
       aria-hidden="true"
-      className="pointer-events-none absolute right-0 top-1/2 z-0 min-h-[1em] -translate-y-1/2 select-none whitespace-nowrap font-display text-[clamp(56px,20vw,160px)] leading-none text-border tablet:-right-10 tablet:text-[clamp(160px,34vw,460px)]"
+      className="pointer-events-none absolute right-0 top-0 z-0 min-h-[1em] select-none whitespace-nowrap font-display text-[clamp(100px,38vw,320px)] leading-none text-border tablet:-right-10 tablet:top-1/2 tablet:-translate-y-1/2 tablet:text-[clamp(160px,34vw,460px)]"
     >
       {text}
       {!reducedMotion && <span className="opacity-40">|</span>}

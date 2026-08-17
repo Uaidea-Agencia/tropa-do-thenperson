@@ -43,7 +43,7 @@ export function CustomCursor({
   offsetY = 0,
   showLabel = true,
   name = "Eleitor",
-  color = "#3a0c02",
+  color = "var(--color-text)",
   textColor = "#ffffff",
   labelTiltStrength = 25,
   labelOffsetUseDefault = true,

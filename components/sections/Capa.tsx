@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/Button";
 import { SignatureLine } from "@/components/capa/SignatureLine";
 import { PROPOSTA_TAGS } from "@/content/propostas-tags";
 import { site } from "@/content/site";
+import { useIntroReady } from "@/features/intro/IntroGate";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
 import { PILAR_ICONS } from "@/lib/pilar-icons";
@@ -47,6 +48,7 @@ const HEADLINE_WORDS = ["voz", "representação", "atenção", "prioridade"] as 
 export function Capa() {
   const prefersReducedMotion = usePrefersReducedMotion();
   const isDesktop = useIsDesktop();
+  const introReady = useIntroReady();
 
   const sectionRef = useRef<HTMLElement>(null);
   const tagRefs = useRef<(HTMLElement | null)[]>([]);
@@ -82,7 +84,7 @@ export function Capa() {
     <section
       ref={sectionRef}
       id="capa"
-      className="relative flex min-h-svh flex-col justify-center overflow-hidden bg-bg-dark pb-6 pt-20"
+      className="relative flex min-h-svh flex-col justify-center overflow-hidden bg-primary-dark pb-6 pt-20"
     >
       {isDesktop && (
         <SignatureLine
@@ -93,6 +95,7 @@ export function Capa() {
           onTagLit={handleTagLit}
           onArrive={handleArrive}
           reducedMotion={prefersReducedMotion}
+          introReady={introReady}
           durationS={LINE_DURATION_S}
         />
       )}
@@ -113,7 +116,7 @@ export function Capa() {
       </div>
 
       <Container className="relative flex flex-col items-center text-center">
-        <p className="font-body text-eyebrow uppercase text-primary-light">
+        <p className="font-body text-eyebrow uppercase text-accent-light">
           {site.role} · {site.state}
         </p>
 
@@ -141,13 +144,13 @@ export function Capa() {
               <p className="font-display text-display leading-none text-text-inverse">
                 THENPERSON
               </p>
-              <p className="-mt-1 font-heading text-h2 font-extrabold text-primary">DO VALE</p>
+              <p className="-mt-1 font-heading text-h2 font-extrabold text-accent">DO VALE</p>
             </FloatingTag>
           </motion.div>
         </div>
 
         <h1 className="mt-10 max-w-2xl font-heading text-h1 font-black text-text-inverse tablet:mt-24 desktop:mt-32">
-          O <span className="text-primary">Vale do Jequitinhonha</span> precisa de{" "}
+          O <span className="text-accent">Vale do Jequitinhonha</span> precisa de{" "}
           <TypewriterWord words={HEADLINE_WORDS} />.
         </h1>
 

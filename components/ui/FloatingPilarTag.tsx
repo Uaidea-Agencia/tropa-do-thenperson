@@ -48,12 +48,12 @@ export const FloatingPilarTag = forwardRef<HTMLDivElement, Readonly<FloatingPila
         <motion.div
           className={`flex items-center gap-2 rounded-pill border-2 px-4 py-2 backdrop-blur-sm transition-colors duration-300 ease-brand ${
             lit
-              ? "border-primary bg-text-inverse/15 opacity-100"
+              ? "border-accent bg-text-inverse/15 opacity-100"
               : "border-transparent bg-text-inverse/10 opacity-55"
           }`}
           animate={controls}
         >
-          <Icon size={16} className="text-accent" aria-hidden="true" />
+          <Icon size={16} className="text-marker" aria-hidden="true" />
           <span className="font-body text-caption text-text-inverse">{label}</span>
         </motion.div>
       </div>

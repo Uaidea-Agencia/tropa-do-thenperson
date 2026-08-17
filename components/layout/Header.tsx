@@ -43,13 +43,13 @@ function NavItem({
       onClick={onClick}
       aria-current={active ? "true" : undefined}
       className={`relative rounded-xs pb-1 transition-colors duration-150 ease-brand focus-visible:outline-2 focus-visible:outline-focus ${
-        active ? "text-primary-light" : "text-text-inverse/75 hover:text-text-inverse"
+        active ? "text-accent-light" : "text-text-inverse/75 hover:text-text-inverse"
       } ${className}`}
     >
       {label}
       <motion.span
         aria-hidden="true"
-        className="absolute inset-x-0 -bottom-0.5 h-0.5 origin-left rounded-pill bg-primary-light"
+        className="absolute inset-x-0 -bottom-0.5 h-0.5 origin-left rounded-pill bg-accent-light"
         style={{ originX: 0 }}
         initial={false}
         animate={{ scaleX: active ? 1 : 0 }}
@@ -78,7 +78,7 @@ export function Header() {
   }, [menuOpen]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-text-inverse/10 bg-bg-dark">
+    <header className="fixed inset-x-0 top-0 z-40 border-b border-text-inverse/10 bg-primary-dark">
       <Container className="flex h-16 items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <Link
@@ -144,7 +144,7 @@ export function Header() {
       {menuOpen && (
         <div
           id="mobile-menu"
-          className="fixed inset-x-0 top-16 bottom-0 z-30 flex flex-col justify-center overflow-y-auto bg-bg-dark nav:hidden"
+          className="fixed inset-x-0 top-16 bottom-0 z-30 flex flex-col justify-center overflow-y-auto bg-primary-dark nav:hidden"
         >
           <Container className="flex flex-col gap-2 py-10">
             {NAV_LINKS.map((link) => (

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#3A0C02",
+  themeColor: "#06214F",
   width: "device-width",
   initialScale: 1,
 };
@@ -29,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={`${anton.variable} ${montserrat.variable} ${poppins.variable}`}>
-      <body className="font-body antialiased">
+      <body className="font-body antialiased" suppressHydrationWarning>
         <CustomCursor>{children}</CustomCursor>
       </body>
     </html>

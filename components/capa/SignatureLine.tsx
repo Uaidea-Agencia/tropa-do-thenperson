@@ -71,6 +71,7 @@ interface SignatureLineProps {
   onTagLit: (litIndices: Set<number>) => void;
   onArrive: () => void;
   reducedMotion: boolean;
+  introReady: boolean;
   durationS: number;
 }
 
@@ -82,6 +83,7 @@ export function SignatureLine({
   onTagLit,
   onArrive,
   reducedMotion,
+  introReady,
   durationS,
 }: Readonly<SignatureLineProps>) {
   const filterId = useId();
@@ -94,7 +96,16 @@ export function SignatureLine({
   const tagTsRef = useRef<number[] | null>(null);
   const startedRef = useRef(false);
   const arrivedRef = useRef(false);
+  const runningAnimationRef = useRef<ReturnType<typeof animate> | null>(null);
   const [arrowAngle, setArrowAngle] = useState(0);
+  // Latches true the first time geometry has been measured — a plain
+  // state flag rather than reading `pathD` directly keeps the
+  // animation-start effect below from re-arming on every resize tick
+  // (pathD changes on every measurement, geometryReady only flips
+  // once), which is what let a resize mid-flight leave the line
+  // permanently stuck (see the animation-start effect for the full
+  // story).
+  const [geometryReady, setGeometryReady] = useState(false);
   const arrowControls = useAnimationControls();
 
   const fireArrival = useCallback(() => {
@@ -136,8 +147,9 @@ export function SignatureLine({
         return total > 0 ? partial.getTotalLength() / total : 0;
       });
       tagTsRef.current = ts;
+      setGeometryReady(true);
 
-      if (reducedMotion) {
+      if (reducedMotion && introReady) {
         progress.set(1);
         onTagLit(new Set(ts.map((_, i) => i)));
         fireArrival();
@@ -145,10 +157,33 @@ export function SignatureLine({
     }, 0);
 
     return () => clearTimeout(timer);
-  }, [points, pathD, tagCount, reducedMotion, progress, onTagLit, fireArrival]);
+  }, [points, pathD, tagCount, reducedMotion, introReady, progress, onTagLit, fireArrival]);
 
+  // Arms the draw-in animation exactly once geometry is ready, the
+  // section is in view, and the intro is out of the way (never while
+  // it's still covering the screen — `isInView` alone doesn't know
+  // about the intro's opaque overlay, since geometrically Capa is
+  // "in view" from the very first paint). Deliberately does NOT depend
+  // on `pathD`/`points` directly: those change on every resize tick
+  // (useAnchorPoints re-measures via ResizeObserver), and if this
+  // effect re-ran on each one, a resize landing inside the
+  // START_DELAY_MS window would cancel the pending timer (cleanup) and
+  // immediately re-run into the `startedRef.current` guard — armed,
+  // but never actually fired, forever. geometryReady only flips once,
+  // so the timer is scheduled once and left alone; buildKeyframes
+  // still reads the latest tagTsRef.current at fire time, so it uses
+  // current geometry either way.
   useEffect(() => {
-    if (reducedMotion || startedRef.current || !isInView || !pathD || !tagTsRef.current) return;
+    if (
+      reducedMotion ||
+      startedRef.current ||
+      !isInView ||
+      !introReady ||
+      !geometryReady ||
+      !tagTsRef.current
+    ) {
+      return undefined;
+    }
     startedRef.current = true;
 
     const timer = setTimeout(() => {
@@ -160,11 +195,15 @@ export function SignatureLine({
         duration: durationS,
         ease: EASE_LINE,
       });
+      runningAnimationRef.current = controls;
       controls.then(fireArrival);
     }, START_DELAY_MS);
 
-    return () => clearTimeout(timer);
-  }, [reducedMotion, isInView, pathD, durationS, progress, fireArrival]);
+    return () => {
+      clearTimeout(timer);
+      runningAnimationRef.current?.stop();
+    };
+  }, [reducedMotion, isInView, introReady, geometryReady, durationS, progress, fireArrival]);
 
   useMotionValueEvent(progress, "change", (p) => {
     const ts = tagTsRef.current;
@@ -218,7 +257,7 @@ export function SignatureLine({
         <motion.path
           d={pathD}
           fill="none"
-          stroke="var(--color-primary)"
+          stroke="var(--color-accent)"
           strokeWidth={2}
           strokeLinecap="round"
           initial={{ opacity: 0 }}
@@ -233,8 +272,8 @@ export function SignatureLine({
         >
           <path
             d="M-7,-6 L9,0 L-7,6 Z"
-            fill="var(--color-primary)"
-            stroke="var(--color-bg-dark)"
+            fill="var(--color-accent)"
+            stroke="var(--color-text)"
             strokeWidth={1}
             strokeLinejoin="round"
           />
@@ -254,7 +293,7 @@ export function SignatureLine({
       <motion.path
         d={pathD}
         fill="none"
-        stroke="var(--color-accent)"
+        stroke="var(--color-marker)"
         strokeWidth={9}
         strokeLinecap="round"
         pathLength={1}
@@ -267,7 +306,7 @@ export function SignatureLine({
       <motion.path
         d={pathD}
         fill="none"
-        stroke="var(--color-primary)"
+        stroke="var(--color-accent)"
         strokeWidth={2}
         strokeLinecap="round"
         pathLength={1}
@@ -281,7 +320,7 @@ export function SignatureLine({
           key={i}
           d={pathD}
           fill="none"
-          stroke="var(--color-primary)"
+          stroke="var(--color-accent)"
           strokeLinecap="round"
           pathLength={1}
           strokeDasharray={WORM_DASH}
@@ -294,7 +333,7 @@ export function SignatureLine({
         ref={pathRef}
         d={pathD}
         fill="none"
-        stroke="var(--color-primary)"
+        stroke="var(--color-accent)"
         strokeWidth={3}
         strokeLinecap="round"
         pathLength={1}
@@ -304,7 +343,7 @@ export function SignatureLine({
 
       <motion.circle
         r={4}
-        fill="var(--color-primary)"
+        fill="var(--color-accent)"
         style={{ cx: headX, cy: headY, opacity: fadeOutOpacity }}
       />
 
@@ -320,8 +359,8 @@ export function SignatureLine({
       >
         <path
           d="M-7,-6 L9,0 L-7,6 Z"
-          fill="var(--color-primary)"
-          stroke="var(--color-bg-dark)"
+          fill="var(--color-accent)"
+          stroke="var(--color-text)"
           strokeWidth={1}
           strokeLinejoin="round"
         />

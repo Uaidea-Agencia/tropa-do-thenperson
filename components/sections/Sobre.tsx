@@ -17,7 +17,7 @@ export function Sobre() {
     <section id="sobre" className="bg-bg py-20 desktop:py-28">
       <Container>
         <header className="max-w-2xl">
-          <p className="font-body text-eyebrow uppercase text-accent-dark">Trajetória</p>
+          <p className="font-body text-eyebrow uppercase text-marker-dark">Trajetória</p>
           <h2 className="mt-3 font-heading text-h2 font-extrabold text-text">
             Chega de nos chamarem de vale da miséria.
           </h2>

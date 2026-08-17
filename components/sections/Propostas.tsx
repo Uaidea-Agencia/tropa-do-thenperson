@@ -12,7 +12,7 @@ export function Propostas() {
 
         <Container className="relative z-10 py-20 desktop:py-24">
           <header className="max-w-2xl">
-            <p className="font-body text-eyebrow uppercase text-secondary">Propostas</p>
+            <p className="font-body text-eyebrow uppercase text-primary">Propostas</p>
             <h2 className="mt-3 font-heading text-h2 font-extrabold text-text">
               Festa não muda a vida de ninguém.
             </h2>
@@ -20,7 +20,7 @@ export function Propostas() {
               Seis pautas, construídas de dentro do Vale — do Alto ao Baixo Jequitinhonha, até
               Almenara.
             </p>
-            <Badge tone="primary" className="mt-4">
+            <Badge tone="accent" className="mt-4">
               Nº {site.electoralNumber}
             </Badge>
           </header>

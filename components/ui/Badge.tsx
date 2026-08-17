@@ -4,8 +4,8 @@ export type BadgeTone = "accent" | "primary" | "secondary" | "inverse" | "muted"
 
 const TONE_CLASSES: Record<BadgeTone, string> = {
   accent: "bg-accent text-text",
-  primary: "bg-primary text-text-on-primary",
-  secondary: "bg-secondary text-text-inverse",
+  primary: "bg-primary text-text-inverse",
+  secondary: "bg-primary text-text-inverse",
   inverse: "border border-text-inverse/40 text-text-inverse",
   muted: "bg-bg-muted text-text-muted border border-border",
 };

@@ -76,7 +76,7 @@ export function IntroOverlay({ onDone }: Readonly<IntroOverlayProps>) {
       role="dialog"
       aria-modal="true"
       aria-label={`Abertura — ${site.candidateName}`}
-      className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-bg-dark"
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-primary-dark"
       initial={{ opacity: 1, scale: 1 }}
       animate={{ opacity: collapsing ? 0 : 1, scale: collapsing ? 1.04 : 1 }}
       exit={{ opacity: 0 }}
@@ -134,9 +134,9 @@ export function IntroOverlay({ onDone }: Readonly<IntroOverlayProps>) {
         <FloatingTag className="relative -mt-3 min-w-44 text-center">
           <p className="font-display text-display leading-none text-text-inverse">
             {visibleSegments[0]}
-            {line1Typing && <span className="text-primary">|</span>}
+            {line1Typing && <span className="text-accent">|</span>}
           </p>
-          <p className="-mt-1 font-heading text-h2 font-extrabold text-primary">
+          <p className="-mt-1 font-heading text-h2 font-extrabold text-accent">
             {visibleSegments[1]}
             {line2Typing && <span className="text-text-inverse">|</span>}
           </p>
@@ -147,7 +147,7 @@ export function IntroOverlay({ onDone }: Readonly<IntroOverlayProps>) {
         ref={skipButtonRef}
         type="button"
         onClick={onDone}
-        className="absolute right-5 top-5 z-10 rounded-pill border border-text-inverse/40 bg-bg-dark/60 px-4 py-2 font-body text-button uppercase text-text-inverse backdrop-blur-sm transition-colors duration-150 ease-brand hover:bg-text-inverse hover:text-text tablet:right-8 tablet:top-8"
+        className="absolute right-5 top-5 z-10 rounded-pill border border-text-inverse/40 bg-primary-dark/60 px-4 py-2 font-body text-button uppercase text-text-inverse backdrop-blur-sm transition-colors duration-150 ease-brand hover:bg-text-inverse hover:text-text tablet:right-8 tablet:top-8"
       >
         Pular
       </button>

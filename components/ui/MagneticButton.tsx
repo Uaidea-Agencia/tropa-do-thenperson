@@ -87,7 +87,7 @@ export function MagneticButton({
         onMouseMove={updateWipeOrigin}
         onMouseLeave={() => setHovered(false)}
         onFocus={() => setWipeOrigin({ x: 50, y: 50 })}
-        className={`relative isolate inline-flex items-center justify-center overflow-hidden bg-cta text-text-on-primary focus-visible:outline-2 focus-visible:outline-focus ${BUTTON_BASE_CLASSES} ${BUTTON_SIZE_CLASSES.md} ${className}`}
+        className={`relative isolate inline-flex items-center justify-center overflow-hidden bg-cta text-text-on-accent focus-visible:outline-2 focus-visible:outline-focus ${BUTTON_BASE_CLASSES} ${BUTTON_SIZE_CLASSES.md} ${className}`}
       >
         <span className="relative z-10 inline-flex items-center gap-2">
           {icon}

@@ -126,7 +126,7 @@ export function MapaJequitinhonha({
           ref={routeRef}
           d={rotaD}
           mask="url(#revelar-rota)"
-          stroke="var(--color-primary)"
+          stroke="var(--color-accent)"
           strokeWidth={3}
           fill="none"
           strokeLinecap="round"
@@ -238,7 +238,7 @@ function PontoCidade({
         >
           <path
             d="M-6,-14 A6,6 0 1 1 6,-14 L0,2 Z"
-            fill="var(--color-primary)"
+            fill="var(--color-accent)"
             stroke="var(--color-bg)"
             strokeWidth={1.5}
           />
@@ -248,7 +248,7 @@ function PontoCidade({
       {ativo && !reducedMotion && (
         <motion.circle
           fill="none"
-          stroke="var(--color-primary)"
+          stroke="var(--color-accent)"
           strokeWidth={2}
           initial={{ r: raio, opacity: 0.6 }}
           animate={{ r: [raio, raio + 8], opacity: [0.6, 0] }}
@@ -258,7 +258,7 @@ function PontoCidade({
       <motion.circle
         r={raio}
         style={{ fillOpacity: ativo ? 1 : visitadoOpacity }}
-        fill="var(--color-primary)"
+        fill="var(--color-accent)"
         stroke="var(--color-bg)"
         strokeWidth={2}
       />
@@ -266,7 +266,7 @@ function PontoCidade({
         <motion.circle
           r={raio}
           fill="none"
-          stroke="var(--color-primary)"
+          stroke="var(--color-accent)"
           strokeWidth={1.5}
           style={{ opacity: naoVisitadoOpacity }}
         />
@@ -277,7 +277,7 @@ function PontoCidade({
         textAnchor="middle"
         fontSize={16}
         fontWeight={600}
-        fill="var(--color-bg-dark)"
+        fill="var(--color-text)"
         stroke="var(--color-bg)"
         strokeWidth={3.5}
         paintOrder="stroke"

@@ -35,7 +35,7 @@ function Photo({
     />
   );
 
-  const className = `relative aspect-3/4 w-full overflow-hidden rounded-card ${wide ? "desktop:w-2/3" : ""}`;
+  const className = `relative aspect-3/4 w-full overflow-hidden rounded-card ${wide ? "tablet:w-2/3" : ""}`;
 
   if (!animated) {
     return <div className={className}>{image}</div>;
@@ -62,9 +62,9 @@ export function MilestoneRow({ milestone, photoIndexOffset }: Readonly<Milestone
 
   const textContent: ReactNode = (
     <>
-      <p className="font-body text-eyebrow uppercase text-accent-dark">{milestone.eyebrow}</p>
+      <p className="font-body text-eyebrow uppercase text-marker-dark">{milestone.eyebrow}</p>
       {milestone.quote && (
-        <blockquote className="mt-3 font-heading text-h3 font-bold italic text-secondary">
+        <blockquote className="mt-3 font-heading text-h3 font-bold italic text-primary">
           “{milestone.quote}”
         </blockquote>
       )}

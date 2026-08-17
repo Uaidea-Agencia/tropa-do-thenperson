@@ -5,7 +5,7 @@ import { site } from "@/content/site";
 
 export function Footer() {
   return (
-    <footer className="bg-bg-dark text-text-inverse">
+    <footer className="bg-primary-dark text-text-inverse">
       <Container className="flex flex-col gap-8 py-12 tablet:flex-row tablet:items-center tablet:justify-between">
         <div className="flex items-center gap-4">
           <Image

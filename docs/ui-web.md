@@ -15,8 +15,11 @@ depois do primeiro corte do site (`components/layout/Header.tsx`).
 - Fixo no topo (`position: fixed`), altura `4rem` (`h-16`) quando
   fechado, acima de todo o conteúdo (`z-40` — abaixo só da Intro, que é
   `z-50`).
-- Fundo terra sólido (`--color-bg-dark`), sempre — não muda ao rolar.
-  Como a Capa começa com o mesmo fundo, não há salto de cor.
+- Fundo Azul Profundo sólido (`--color-primary-dark`), sempre — não
+  muda ao rolar. Como a Capa (hero) começa com o mesmo fundo, não há
+  salto de cor — mesma regra que fez o header trocar de v1 (Terra do
+  Vale) para v2 (Azul Profundo) junto com o hero, não para o Azul Vale
+  genérico das demais seções escuras.
 - Conteúdo: logo do candidato à esquerda, colorida, fundo removido de
   verdade (`thenperson-colorido-sem-fundo.png` — ver `docs/marca.md`,
   seção Logo > Candidato), sempre visível (substituiu o ícone quadrado +
@@ -65,7 +68,9 @@ depois do primeiro corte do site (`components/layout/Header.tsx`).
   para ficar laranja nenhuma opção") — `hooks/useActiveSection.ts`, um
   `IntersectionObserver` por seção com uma faixa fina logo abaixo do
   header como referência. O link correspondente troca de cor
-  (`--color-primary-light`) e ganha `aria-current="true"`, tanto na
+  (`--color-accent-light` — laranja pequeno sobre azul precisa da
+  variante clara, ver `docs/marca.md`, Acessibilidade) e ganha
+  `aria-current="true"`, tanto na
   navegação inline quanto no painel mobile; nunca por hover. Na Capa
   (fora da lista rastreada) nenhum item fica laranja — o hook retorna
   `null` explicitamente sempre que nenhuma seção rastreada toca a faixa,
@@ -97,6 +102,11 @@ depois do primeiro corte do site (`components/layout/Header.tsx`).
 já volta pro topo, mas ele queria um atalho mais rápido/visível.
 
 - Fixo, canto inferior direito, `z-30` (abaixo do header e da Intro).
+- Cor `--color-accent`/`--color-accent-dark` (laranja — pedido do
+  cliente: "deixar o botão de ir para cima laranja"), texto
+  `--color-text-on-accent` (grafite, não branco — regra de contraste de
+  `docs/marca.md` para qualquer fundo laranja). Era azul
+  (`--color-primary`) desde a migração para a paleta v2.
 - Some enquanto a Capa está visível; aparece assim que ela sai da tela
   (`IntersectionObserver` na seção `#capa`, com `rootMargin` descontando
   a altura do header).
@@ -122,10 +132,14 @@ já volta pro topo, mas ele queria um atalho mais rápido/visível.
     vertical simples, sem sincronismo de scroll.
 - Foco de teclado sempre visível — anel na cor `--color-focus`
   (`#00A8B4`), nunca `outline: none` sem substituto.
-- Seleção de texto (`::selection`, `app/globals.css`) na cor primária
-  (`--color-primary`) com texto grafite (`--color-text-on-primary`) —
-  pedido do cliente ("ao selecionar algo, selecione com a cor
-  primária"), no lugar do azul padrão do navegador.
+- Seleção de texto (`::selection`, `app/globals.css`) no laranja de
+  marca (`--color-accent`) com texto grafite (`--color-text-on-accent`)
+  — pedido do cliente ("ao selecionar algo, selecione com a cor
+  primária" — "primária" no sentido coloquial de "cor de assinatura da
+  marca", não do token `--color-primary`, que na v2 é azul), no lugar
+  do azul padrão do navegador. ⚠ Migração v2: antes de vir de
+  `--color-accent`, esse laranja vinha de `--color-primary` (v1) — o
+  hex nunca mudou, só o token que o carrega.
 
 ## Cursor personalizado
 
@@ -144,10 +158,13 @@ todo não é somente no mapa" — agora envolve `{children}` inteiro em
   atrás"). A etiqueta gira com a velocidade horizontal do cursor
   (`labelTiltStrength`, máximo de graus de inclinação), e ambos encolhem
   levemente enquanto um botão do mouse está pressionado (`pressScale`).
-- Cor terra + texto branco ("Branco sobre Terra", a combinação mais
-  segura de contraste do sistema, docs/marca.md) — não as cores padrão
-  branco/preto da especificação original, pra já nascer dentro da
-  paleta da marca.
+- Cor `--color-text` (Grafite Azulado) + texto branco — não as cores
+  padrão branco/preto da especificação original, pra já nascer dentro
+  da paleta da marca. ⚠ Migração v2: era Terra do Vale
+  ("Branco sobre Terra", a combinação mais segura de contraste da v1,
+  17.03) — a Terra saiu do sistema; `--color-text` é o neutro escuro
+  que sobrou, sem virar nenhum dos azuis de seção (o cursor não é uma
+  seção, não devia herdar a cor delas).
 - ⚠ **Posicionamento via `position: fixed` + portal pro `document.body`**,
   não posição absoluta relativa a um contêiner. Primeira versão (só
   sobre o mapa) usava um `<div>` `relative` com as coordenadas do cursor
@@ -272,7 +289,9 @@ a borda da intro"). O componente `AnimatedPortraitFrame` e o arquivo
 
 **Papel**: identificação imediata + primeiro CTA.
 
-- Fundo: `--color-bg-dark` (terra do Vale).
+- Fundo: `--color-primary-dark` (Azul Profundo — era Terra do Vale na v1;
+  hero e rodapé são os dois blocos que a v2 reserva pra esse tom mais
+  escuro, ver `docs/marca.md`).
 - `min-h-svh`, não `min-h-dvh` nem `min-h-screen`. ⚠ Já foi `min-h-dvh`
   — parecia certo (`dvh` desconta a barra de endereço), mas o cliente
   continuou relatando "tenho que rolar um pouco" mesmo depois de várias
@@ -384,6 +403,41 @@ a borda da intro"). O componente `AnimatedPortraitFrame` e o arquivo
     (`arrowControls`), disparado dentro do mesmo `fireArrival()` que já
     chama `onArrive()` — um pulo com overshoot
     (`scale: [0, 1.5, 0.8, 1.15, 1]`), não uma aparição instantânea.
+  - **Corrigido: linha travava ao redimensionar** (relatado pelo
+    cliente: "a linha trava toda vez que eu diminuo a tela, se eu volto
+    ao tamanho padrao do navegador a linha fica totalmente travada") —
+    causa raiz confirmada por reprodução (Playwright, sequência de
+    resize cruzando repetidamente os 1024px, imitando um arrasto real
+    de borda de janela): o efeito que dispara `animate()` dependia de
+    `pathD`, que muda a cada tick de resize (`useAnchorPoints` remede
+    via `ResizeObserver`). Um resize caindo dentro da janela de
+    `START_DELAY_MS` (300ms) cancelava o `setTimeout` pendente
+    (cleanup do efeito) e, ao rodar de novo, batia direto no guard
+    `startedRef.current` — armado, mas nunca disparado, para sempre
+    (a linha via que "já começou" e nunca tentava de novo, mesmo sem
+    ter chamado `animate()` nenhuma vez). Corrigido trocando essa
+    dependência por um estado `geometryReady` que só liga uma vez (a
+    primeira vez que a geometria é medida) — o efeito de disparo não
+    reage mais a cada remedição, só à transição real de "pronto para
+    começar"; `buildKeyframes` continua lendo a geometria mais recente
+    via ref no momento em que o timer dispara. `animate()` também
+    passou a ser parado explicitamente (`controls.stop()`) no cleanup
+    do efeito, evitando uma animação órfã rodando em segundo plano se o
+    componente desmontar (`isDesktop` cruzando o breakpoint) enquanto
+    ela ainda está em voo.
+  - **Início condicionado ao fim da Intro** (pedido do cliente: "que a
+    animação comece somente se a pessoa pular a intro ou a intro
+    terminar de ser exibida") — antes, o disparo dependia só de
+    `useInView` na seção da Capa, que fica "em view" desde o primeiro
+    frame porque geometricamente a Capa já está no viewport por trás do
+    overlay opaco da Intro (`IntroGate` só marca o resto da página
+    `inert`, não a esconde do layout) — a linha podia desenhar inteira
+    escondida atrás da Intro e, quando ela sumia, já aparecer parada ou
+    quase pronta. `IntroGate.tsx` agora expõe um contexto
+    (`useIntroReady`, `!showIntro`) consumido por `Capa.tsx` e repassado
+    como prop `introReady` pro `SignatureLine` — o efeito de disparo
+    exige `isInView && introReady` juntos, então só arma depois que a
+    Intro terminou ou foi pulada, nunca antes.
 - Retrato do candidato centralizado, flutuando (bob vertical leve, loop
   contínuo — mesma linguagem da camada de pilares), **sem moldura ao
   redor** (pedido do cliente — ver o histórico na Seção 1 acima; o
@@ -424,10 +478,13 @@ a borda da intro"). O componente `AnimatedPortraitFrame` e o arquivo
   type/delete em si é JS, então tem sua própria checagem).
   - **Destaque nas palavras-chave** (pedido do cliente: "dê um destaque
     às palavras-chave de 'O Vale do Jequitinhonha precisa de', pode
-    mudar de cor") — "Vale do Jequitinhonha" em `--color-primary`
-    (Laranja Vale), o resto da frase ("O" / "precisa de" / a palavra em
-    loop) continua branco — mesmo tratamento de cor que "DO VALE" já
-    recebe na etiqueta do nome logo acima, não uma cor nova.
+    mudar de cor") — "Vale do Jequitinhonha" em `--color-accent`
+    (Laranja Vale — texto grande e em negrito no `text-h1`, então o
+    laranja puro passa mesmo sobre o Azul Profundo do hero, ver
+    `docs/marca.md`, Acessibilidade), o resto da frase ("O" / "precisa
+    de" / a palavra em loop) continua branco — mesmo tratamento de cor
+    que "DO VALE" já recebe na etiqueta do nome logo acima, não uma cor
+    nova.
 - Um CTA primário (cor `--color-cta`) visível sem precisar rolar —
   aponta para a seção 5 (mobilização), não pede voto.
 
@@ -534,7 +591,7 @@ a borda da intro"). O componente `AnimatedPortraitFrame` e o arquivo
      mount, amostrado e comparado ao ponto real da cidade — não o
      índice da parada), para o ponto acender exatamente quando a linha
      desenhada o alcança visualmente, como o prompt pede. Rótulo de
-     cidade em `--color-bg-dark` com halo (`stroke` claro,
+     cidade em `--color-text` com halo (`stroke` claro,
      `paint-order="stroke"`) por trás do texto, para garantir contraste
      mesmo sobre o verde mais escuro, sem depender de qual microrregião
      está por baixo.
@@ -601,7 +658,7 @@ a borda da intro"). O componente `AnimatedPortraitFrame` e o arquivo
   sinalizando que o Thenperson está lá") — `paradas.ts` ganhou um campo
   `base?: boolean`, `true` só em Almenara (mesma cidade que
   `docs/referencia.md` §7 já cita como base do candidato). Quando essa
-  parada fica ativa, um pino (formato de gota, cor `--color-primary`)
+  parada fica ativa, um pino (formato de gota, cor `--color-accent`)
   aparece sobre o ponto e balança verticalmente em loop
   (`animate={{y:[...]}}`, `repeat: Infinity`); sob
   `prefers-reduced-motion` fica parado numa posição fixa, sem saltar. O
@@ -637,15 +694,20 @@ a borda da intro"). O componente `AnimatedPortraitFrame` e o arquivo
   para esse fundo — não é cor nova). `aria-hidden`, porque é
   decorativo/redundante: o mesmo número continua legível de verdade num
   badge logo abaixo do texto de abertura da seção, pra não depender só
-  da marca d'água pra transmitir a informação. Tamanho responsivo em
-  dois patamares: `clamp(56px, 20vw, 160px)` por padrão, subindo pra
-  `clamp(160px, 34vw, 460px)` a partir de `tablet:` — o mínimo de 160px
-  aplicado a **todas** as telas (pedido original) deixava o número (5
-  dígitos, "70333") quase ilegível no celular: 160px é maior que a
-  largura útil de boa parte dos telefones, então cada dígito só
-  aparecia como um fragmento de curva cortado pelo `overflow-hidden`,
-  não como número reconhecível ("quase não aparece", relatado pelo
-  cliente) — corrigido baixando o mínimo só na faixa mobile.
+  da marca d'água pra transmitir a informação. Tamanho e posição
+  divergem por breakpoint (ver histórico de correções abaixo — a versão
+  mobile foi revisada de novo depois da terceira correção): mobile
+  ancorado no topo do wrapper (`top-0`) com `clamp(100px, 38vw, 320px)`
+  — cresce com a largura da tela até preencher praticamente toda ela;
+  `tablet:` (≥640px) mantém o comportamento centralizado verticalmente
+  (`top-1/2 -translate-y-1/2`) com `clamp(160px, 34vw, 460px)`, herdado
+  da terceira correção sem mudança. O mínimo de 160px aplicado a
+  **todas** as telas (pedido original) deixava o número (5 dígitos,
+  "70333") quase ilegível no celular: 160px é maior que a largura útil
+  de boa parte dos telefones, então cada dígito só aparecia como um
+  fragmento de curva cortado pelo `overflow-hidden`, não como número
+  reconhecível ("quase não aparece", relatado pelo cliente) — corrigido
+  baixando o mínimo só na faixa mobile.
   ⚠ O recorte (`overflow-hidden`) que impede o número de vazar da tela
   fica só no wrapper do cabeçalho da seção, nunca na `<section>` inteira
   — `position: sticky` (usado pelo mapa, acima) para de funcionar se
@@ -686,6 +748,23 @@ a borda da intro"). O componente `AnimatedPortraitFrame` e o arquivo
     uma fatia fina no topo. Medido depois do ajuste: 100% do número
     dentro da área de corte do wrapper (mobile) durante toda a
     passagem natural pela seção.
+  - **Quarta correção, só mobile** (pedido do cliente: "o numero
+    eleitoral para celular pode deixar no topo da seção de propostas,
+    cubrindo todo espaço necessario e que exista em relação a largura")
+    — pedido oposto ao da terceira correção, desta vez explicitamente
+    restrito ao celular: `tablet:` (onde a terceira correção já
+    funcionava bem, confirmado visualmente) foi mantido intacto. Só a
+    regra *sem* prefixo (mobile) voltou a ancorar no topo (`top-0`, sem
+    o `-top-2`/offset negativo que causou a quebra original — desta vez
+    o wrapper tem altura de sobra porque o número também cresceu) e o
+    tamanho subiu de `clamp(56px, 20vw, 160px)` para
+    `clamp(100px, 38vw, 320px)`, grande o suficiente para a largura do
+    número (5 dígitos) se aproximar da largura útil da tela em vez de
+    ficar pequeno no meio do fundo. Testado via screenshot em 375/390/
+    414/430px (larguras reais de celular) — número legível, cobrindo a
+    largura, sem cortar de forma ilegível; `overflow-hidden` do wrapper
+    ainda garante que nenhum salto horizontal escape para o resto da
+    página.
   - **Loop de "máquina de escrever"** (pedido do cliente: "o 70333 pode
     ficar indo e voltando digitando em loop no background") —
     `features/vale-map/PropostasWatermark.tsx`: digita o número
@@ -699,7 +778,11 @@ a borda da intro"). O componente `AnimatedPortraitFrame` e o arquivo
 
 **Papel**: CTA final de mobilização.
 
-- Fundo escuro (`--color-bg-dark` ou `--color-bg-dark-alt`).
+- Fundo escuro (`--color-primary` — Azul Vale, o fundo padrão de seção
+  escura que não é hero nem rodapé). ⚠ Migração v2: era
+  `--color-bg-dark` (Terra) ou `--color-bg-dark-alt` (Grafite quente),
+  os dois eliminados — esta seção não é hero nem rodapé, então não
+  herda o Azul Profundo dos dois.
 - Dois CTAs: grupo de WhatsApp e Instagram — o candidato não tem canal
   de Telegram, então o segundo CTA nunca foi Telegram de fato (era só o
   rótulo genérico enquanto os links reais não tinham chegado).
@@ -732,7 +815,8 @@ a borda da intro"). O componente `AnimatedPortraitFrame` e o arquivo
 ⚠ Não fazia parte das 5 seções originais — mesma origem do header
 (`components/layout/Footer.tsx`).
 
-- Fundo terra (`--color-bg-dark`), logo mono branca do candidato +
+- Fundo Azul Profundo (`--color-primary-dark` — era Terra na v1; mesma
+  regra do hero, ver Seção 2 acima), logo mono branca do candidato +
   nome/cargo à esquerda; logo mono branca do Avante + rótulo "Filiação"
   à direita. Número eleitoral **não fica mais aqui** — pedido do
   cliente ("coloque o número eleitoral em outro lugar"), agora vive só
@@ -759,11 +843,14 @@ a borda da intro"). O componente `AnimatedPortraitFrame` e o arquivo
 
 ⚠ Proposta técnica — pedido do cliente ("o favicon.ico pode ser um T
 laranja com esse fundo da página"). `app/icon.png` (convenção de
-metadata do Next.js App Router): um "T" (`--color-primary`) sobre o
-fundo terra (`--color-bg-dark`) — mesma dupla de cores do header/rodapé,
-sem depender de nenhuma fonte instalada (desenhado como duas barras
-sólidas com cantos levemente arredondados, gerado via `sharp` a partir
-de um SVG simples, 512×512px).
+metadata do Next.js App Router): um "T" (`--color-accent`, Laranja
+Vale) sobre o Azul Profundo (`--color-primary-dark`) — mesma dupla de
+cores do header/rodapé, sem depender de nenhuma fonte instalada
+(desenhado como duas barras sólidas com cantos levemente arredondados,
+gerado via `sharp` a partir de um SVG simples, 512×512px). ⚠ Migração
+v2: era laranja sobre Terra do Vale (`--color-primary`/`--color-bg-dark`
+na v1) — regenerado nesta migração com os mesmos dois retângulos, só
+trocando os hex.
 
 ## Raio, borda, elevação
 
@@ -775,12 +862,12 @@ de um SVG simples, 512×512px).
   sobre fundo claro ou foto — nunca em cards sobre fundo claro liso, onde
   a borda (`--color-border`) já resolve a separação. A etiqueta de nome
   (crachá "THENPERSON DO VALE", Capa e Intro) **não usa mais sombra** —
-  pedido do cliente, sobre o fundo terra (já escuro) ela só sujava o
-  contorno em vez de separar a peça.
+  pedido do cliente, sobre o fundo escuro (já escuro, terra na v1, azul
+  na v2) ela só sujava o contorno em vez de separar a peça.
 
 ## Gradiente
 
-⚠ Proposta técnica. Uso permitido: transição sutil entre `--color-bg-dark`
+⚠ Proposta técnica. Uso permitido: transição sutil entre `--color-primary-dark`
 e preto puro no topo/base da Intro e da Capa, para dar profundidade ao
 fundo por trás do retrato. Nunca gradiente laranja→ciano direto — as
 artes de campanha usam essas cores em blocos sólidos adjacentes, não
@@ -832,7 +919,13 @@ recomendação de estilo genérico, é catalogação do que existe:
    vida pública).
 
 Tratamento sugerido para consistência entre as três origens (câmeras e
-luzes diferentes): saturação levemente reduzida, temperatura puxando
-para quente (combina com `--color-bg-dark`), sem filtro que achate
+luzes diferentes): saturação levemente reduzida, sem filtro que achate
 contraste — o material já é de alto contraste por natureza (ver análise
-de cor em `docs/marca.md`).
+de cor em `docs/marca.md`). ⚠ Migração v2: a v1 pedia temperatura
+puxando para quente, pra combinar com o fundo terra
+(`--color-bg-dark`, eliminado). Com a base azul, o PDF v2 inverte essa
+regra: fotos devem ir para o frio, com sombras levemente azuladas, para
+não brigar com `--color-primary`/`--color-primary-dark` — vale
+principalmente para as fotos de estúdio com fundo neutro (Seção 1 e 2
+acima). Ainda não reprocessado nos assets já usados no site; registrado
+aqui para a próxima passada de tratamento de imagem.
