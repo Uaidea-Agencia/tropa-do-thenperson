@@ -1,0 +1,12 @@
+commit_msg=$(cat "$1")
+stripped=$(echo "$commit_msg" | tr -d '[:space:]')
+
+if [ -z "$stripped" ]; then
+  echo "Commit rejeitado: mensagem de commit vazia."
+  exit 1
+fi
+
+if [ ${#stripped} -lt 10 ]; then
+  echo "Commit rejeitado: mensagem de commit muito curta (mínimo 10 caracteres)."
+  exit 1
+fi
