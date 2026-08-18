@@ -62,7 +62,7 @@ export const milestones: Milestone[] = [
   {
     id: "origem-politica",
     eyebrow: "Origem do desejo político",
-    text: 'Uma das filhas foi diagnosticada com câncer aos 2 anos — foi quando deixou de ser ateu. Durante a pandemia, pediu apoio ao comércio local e foi ignorado pelo prefeito. Protestou sozinho, carregando um caixão nas costas com a frase "futuro do comércio". O vídeo viralizou na região.',
+    text: 'Uma das filhas foi diagnosticada com câncer aos 2 anos. Foi por essa mesma época — não por causa disso, mas porque passou a acreditar em Deus — que deixou de ser ateu. Durante a pandemia, pediu apoio ao comércio local e foi ignorado pelo prefeito. Protestou sozinho, carregando um caixão nas costas com a frase "futuro do comércio". O vídeo viralizou na região.',
     photos: [],
   },
   {
@@ -86,7 +86,7 @@ export const milestones: Milestone[] = [
   {
     id: "hoje",
     eyebrow: "Hoje",
-    text: "Pré-candidato a Deputado Estadual por Minas Gerais pelo Avante — 70. Leva a voz do Vale do Jequitinhonha para dentro da Assembleia Legislativa.",
+    text: "Candidato a Deputado Estadual por Minas Gerais pelo Avante — 70. Leva a voz do Vale do Jequitinhonha para dentro da Assembleia Legislativa.",
     photos: [
       {
         src: "/images/institucionais/institucional-06.jpg",

@@ -6,7 +6,7 @@ export type CtaLink = {
 export const ctaLinks = {
   whatsapp: {
     label: "Grupo do WhatsApp",
-    href: "https://chat.whatsapp.com/F9W2DqZIamyKvwv50P95IQ",
+    href: "https://chat.whatsapp.com/E37S9PNOadYCo0CmB9MrKz?s=cl&p=i&mlu=4&amv=0",
   },
   instagram: {
     label: "Instagram",

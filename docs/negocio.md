@@ -95,7 +95,7 @@ de voto direto.
 
 ## Contato confirmado
 
-Grupo do WhatsApp (`https://chat.whatsapp.com/F9W2DqZIamyKvwv50P95IQ`) e
+Grupo do WhatsApp (`https://chat.whatsapp.com/E37S9PNOadYCo0CmB9MrKz?s=cl&p=i&mlu=4&amv=0`) e
 Instagram (`https://www.instagram.com/thenperson/`) — `docs/referencia.md`,
 seção 4. O candidato não tem canal de Telegram; o segundo CTA do site é
 o Instagram. `content/cta-links.ts` guarda os dois; `CtaButton`

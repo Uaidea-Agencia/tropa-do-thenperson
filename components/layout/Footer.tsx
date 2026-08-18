@@ -44,7 +44,7 @@ export function Footer() {
 
       <Container className="flex flex-col gap-1 border-t border-text-inverse/10 py-6 tablet:flex-row tablet:items-center tablet:justify-between">
         <p className="text-caption text-text-inverse/50">
-          {site.candidateName} — {site.region}, base em {site.base}. Conteúdo de pré-candidatura.
+          {site.candidateName} — {site.region}, base em {site.base}. Conteúdo de campanha.
         </p>
         <p className="text-caption text-text-inverse/50">
           © {new Date().getFullYear()} {site.candidateName}. Todos os direitos reservados.

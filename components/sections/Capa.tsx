@@ -120,7 +120,7 @@ export function Capa() {
           {site.role} · {site.state}
         </p>
 
-        <div className="relative mt-6 w-40 tablet:w-56 desktop:w-64">
+        <div className="relative mt-6 w-40 tablet:w-72 desktop:w-80">
           <motion.div
             animate={prefersReducedMotion ? undefined : { y: [0, -12, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}

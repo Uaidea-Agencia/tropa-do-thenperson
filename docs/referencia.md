@@ -93,7 +93,9 @@ a partir de duas entrevistas de alinhamento com o pré-candidato.
   da sogra e se mudou com a esposa grávida para Almenara com 18 caixas
   de mercadoria, para recomeçar do zero.
 - **Origem do desejo político**: filha diagnosticada com câncer aos 2
-  anos — período em que deixou de ser ateu. Durante a pandemia, ignorado
+  anos. Foi por essa mesma época — não por causa disso, mas porque
+  passou a acreditar em Deus — que deixou de ser ateu. Durante a
+  pandemia, ignorado
   pelo prefeito ao pedir apoio ao comércio local, protestou sozinho
   carregando um caixão nas costas com a frase "futuro do comércio" — o
   vídeo viralizou localmente.
@@ -110,7 +112,7 @@ a partir de duas entrevistas de alinhamento com o pré-candidato.
   identificou vídeo como o mais importante de todos os formatos.
 - **Número eleitoral**: 70333 (partido Avante, número 70).
 - **Canais de mobilização confirmados**: grupo do WhatsApp
-  (`https://chat.whatsapp.com/F9W2DqZIamyKvwv50P95IQ`) e Instagram
+  (`https://chat.whatsapp.com/E37S9PNOadYCo0CmB9MrKz?s=cl&p=i&mlu=4&amv=0`) e Instagram
   (`https://www.instagram.com/thenperson/`). O candidato **não tem**
   canal de Telegram — o segundo CTA do site é o Instagram, não um canal
   de Telegram inexistente (ver item correspondente removido da lista de
