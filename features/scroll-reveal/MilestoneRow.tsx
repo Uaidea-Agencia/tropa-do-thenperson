@@ -10,6 +10,9 @@ import { DURATION, EASE_BRAND } from "@/lib/motion";
 interface MilestoneRowProps {
   milestone: Milestone;
   photoIndexOffset: number;
+  /** Exposes the marker dot's DOM node so TrajetoriaTimeline can measure
+   *  its position and route the shared traveling dot through it. */
+  markerRef?: (el: HTMLSpanElement | null) => void;
 }
 
 function Photo({
@@ -54,22 +57,42 @@ function Photo({
   );
 }
 
-export function MilestoneRow({ milestone, photoIndexOffset }: Readonly<MilestoneRowProps>) {
+export function MilestoneRow({
+  milestone,
+  photoIndexOffset,
+  markerRef,
+}: Readonly<MilestoneRowProps>) {
   const ref = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = usePrefersReducedMotion();
   const isInView = useInView(ref, { once: true, margin: "-15% 0px -15% 0px" });
   const animated = !prefersReducedMotion;
 
+  // The connecting line itself is one shared element drawn by
+  // TrajetoriaTimeline (it needs every marker's real Y position to route
+  // through them) — this dot is just the waypoint marker, still local:
+  // it pops and switches from track-gray to accent the moment its own
+  // milestone scrolls into view, independent of where the traveling dot
+  // currently is.
   const textContent: ReactNode = (
-    <>
+    <div className="relative pl-6 desktop:pl-8">
+      <motion.span
+        ref={markerRef}
+        aria-hidden="true"
+        className={`absolute left-0 top-1 h-3 w-3 -translate-x-1/2 rounded-pill border-2 border-bg ${
+          isInView ? "bg-accent" : "bg-border"
+        }`}
+        initial={false}
+        animate={animated && isInView ? { scale: [1, 1.35, 1] } : { scale: 1 }}
+        transition={{ duration: DURATION.block, ease: EASE_BRAND }}
+      />
       <p className="font-body text-eyebrow uppercase text-marker-dark">{milestone.eyebrow}</p>
       {milestone.quote && (
-        <blockquote className="mt-3 font-heading text-h3 font-bold italic text-primary">
+        <blockquote className="mt-4 rounded-card border border-border/60 bg-bg-muted/70 px-5 py-4 font-heading text-h3 font-bold italic text-primary backdrop-blur-sm">
           “{milestone.quote}”
         </blockquote>
       )}
       <p className="mt-4 max-w-prose font-body text-body text-text-muted">{milestone.text}</p>
-    </>
+    </div>
   );
 
   return (

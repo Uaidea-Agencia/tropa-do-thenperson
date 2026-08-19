@@ -4,8 +4,8 @@
 repositório, não lei. Pode ser revisado sem aprovação de marca, mas
 qualquer mudança relevante deve ser registrada aqui no mesmo PR.
 
-Site é **single page, mobile-first**, cinco seções em sequência fixa:
-Intro → Capa → Sobre → Propostas → Quer saber mais?.
+Site é **single page, mobile-first**, seis seções em sequência fixa:
+Intro → Capa → Sobre → Propostas → O que ele decide → Quer saber mais?.
 
 ## Header (fixo)
 
@@ -15,11 +15,36 @@ depois do primeiro corte do site (`components/layout/Header.tsx`).
 - Fixo no topo (`position: fixed`), altura `4rem` (`h-16`) quando
   fechado, acima de todo o conteúdo (`z-40` — abaixo só da Intro, que é
   `z-50`).
-- Fundo Azul Profundo sólido (`--color-primary-dark`), sempre — não
-  muda ao rolar. Como a Capa (hero) começa com o mesmo fundo, não há
-  salto de cor — mesma regra que fez o header trocar de v1 (Terra do
-  Vale) para v2 (Azul Profundo) junto com o hero, não para o Azul Vale
-  genérico das demais seções escuras.
+- Fundo Azul Profundo (`--color-primary-dark`), sempre — não muda ao
+  rolar. Como a Capa (hero) começa com o mesmo fundo, não há salto de
+  cor — mesma regra que fez o header trocar de v1 (Terra do Vale) para
+  v2 (Azul Profundo) junto com o hero, não para o Azul Vale genérico das
+  demais seções escuras. ⚠ Deixou de ser sólido — pedido do cliente
+  ("efeitos em glass"): agora `bg-primary-dark/75 backdrop-blur-md`
+  (ver `docs/marca.md`, seção Superfícies em vidro), mesma regra de
+  cor, só com o fundo real passando ligeiramente por trás
+  (`bg-primary-dark/90 backdrop-blur-md` — testado em `/75` primeiro,
+  mas sobre seções claras o azul ficava claro/acinzentado demais e
+  quebrava a identidade "sempre Azul Profundo"; `/90` mantém a cor
+  reconhecível em qualquer seção atrás). O menu mobile em tela cheia
+  segue a mesma lógica, um pouco mais opaco ainda
+  (`bg-primary-dark/90 backdrop-blur-lg`), por cobrir a tela inteira.
+  ⚠ **Bug já corrigido, causa não óbvia**: o `backdrop-blur` do fundo
+  não pode viver no `<header>` em si — `backdrop-filter` num ancestral
+  vira "containing block" dos descendentes `position: fixed` (mesma
+  regra de `transform`/`filter`/`perspective`/`will-change`). Como o
+  painel do menu mobile (`#mobile-menu`) também é `fixed`, com
+  `top-16 bottom-0` (esperando altura = viewport menos o header), ele
+  passou a calcular essa altura relativa ao **header** (64px) em vez da
+  viewport — top e bottom convergiam no mesmo ponto, altura zerada, o
+  conteúdo continuava no DOM (visível pro Playwright/leitor de tela) mas
+  invisível na tela, sem erro nenhum no console. Sintoma relatado pelo
+  cliente como "o menu não está funcionando". Correção: o `<header>` em
+  si ficou sem cor/blur — viraram uma `<div>` interna que envolve só a
+  barra superior (`Container`), deixando `#mobile-menu` como irmão dela,
+  não descendente de nada com `backdrop-filter`. Qualquer novo uso de
+  `backdrop-blur`/glass num elemento que seja ancestral de algo
+  `position: fixed` precisa passar por esse mesmo cuidado.
 - Conteúdo: logo do candidato à esquerda, colorida, fundo removido de
   verdade (`thenperson-colorido-sem-fundo.png` — ver `docs/marca.md`,
   seção Logo > Candidato), sempre visível (substituiu o ícone quadrado +
@@ -28,7 +53,11 @@ depois do primeiro corte do site (`components/layout/Header.tsx`).
   partir de `nav`, era `h-10`/`h-11`); logo do Avante (variante
   monocromática branca oficial, ver `docs/marca.md`, seção Logo >
   Avante) logo em seguida, só a partir de `nav` (960px — ver breakpoint
-  abaixo). Navegação para as seções no centro, só a partir de `nav`. CTA
+  abaixo). Navegação para as seções no centro, só a partir de `nav` —
+  ⚠ pedido do cliente ("diminua o tamanho dos itens na nav"): o texto do
+  link usa o token `text-button` (14–15px) em vez de `text-body`
+  (16–17px), com `gap-5` entre eles em vez de `gap-6` — ficou mais denso
+  depois que o item "O que ele decide" entrou como quarto link. CTA
   de mobilização à direita (`Button` `size="sm"`, aponta para
   `#quer-saber-mais`) — visível a partir de `xs` (480px) até sumir de
   novo a partir de `nav` (vira parte do painel do menu); abaixo de `xs`
@@ -507,11 +536,63 @@ a borda da intro"). O componente `AnimatedPortraitFrame` e o arquivo
   fluido em mobile.
 - Texto de cada marco: curto, no tom de `docs/tom-de-voz.md` (gancho →
   fato, sem adjetivo de abertura).
+- ⚠ Trilho de linha do tempo — pedido do cliente ("mais sério/atual"):
+  cada marco ganhou uma régua vertical (`border-l-2 border-border`) com
+  um marcador (`bg-accent`, `rounded-pill`) à esquerda do texto, e a
+  citação (`quote`, quando existe) virou um cartão em vidro
+  (`bg-bg-muted/70 backdrop-blur-sm`, ver `docs/marca.md`, Superfícies em
+  vidro) em vez de itálico solto. Não inventa data: os marcos continuam
+  sem ano exato porque idade/data de nascimento do candidato está em
+  `docs/referencia.md`, seção 4 "Pendente".
+- ⚠ Ponto viajante — pedido do cliente ("o primeiro ponto vai indo até
+  o outro, e quando chega no agora dá um destaque a mais"). Trocou a
+  primeira versão (linha desenhando por marco, isolada) por um
+  mecanismo compartilhado, em `features/scroll-reveal/TrajetoriaTimeline.tsx`:
+  - Cada marcador de marco (`MilestoneRow`) expõe seu nó real via
+    `markerRef`; `useMarkerYPositions` (`hooks/useMarkerYPositions.ts`)
+    mede a posição Y de cada um relativo ao contêiner da lista — mesma
+    técnica de "medir posição real via DOM" que `useAnchorPoints` já usa
+    na linha-assinatura da Capa, só que para uma lista vertical reta (sem
+    ajuste de curva, só interpolação linear entre os Y medidos).
+  - Um trilho cinza (`border-border`) fixo conecta o primeiro ao último
+    marco. Por cima, um ponto maior (a "bolinha viajante") se move ao
+    longo do scroll da seção (`useScroll` + `useTransform` mapeando
+    `scrollYProgress` para os Y reais de cada marco, em vez de uma altura
+    proporcional ao contêiner) — visita cada marco de verdade em vez de
+    derivar do fim do container.
+  - **"Chegou no agora"**: quando o marco `hoje` (o último) entra em
+    vista (`useInView` sobre o marcador real, `once: true` — mesmo
+    gatilho usado no resto da seção), o ponto viajante ganha um pulso de
+    escala (`scale: 1 → 1.3`) e uma onda (`ring`) que expande e some uma
+    vez, em cima da posição final — sem string de `boxShadow` animada,
+    só `scale`/`opacity` em cores já tokenizadas (`border-accent`,
+    `bg-accent`), pra não precisar de rgba solto no código.
+  - Cada marcador individual continua "acendendo" (cinza → laranja +
+    pop de escala) no próprio `isInView`, independente de onde o ponto
+    viajante está — reforça "esse marco já foi alcançado" mesmo antes do
+    ponto viajante chegar visualmente nele.
+  - Sob `prefers-reduced-motion`: nada de trilho crescendo nem ponto
+    viajando — o ponto já nasce parado no marco `hoje`, no tamanho de
+    "chegada", sem onda (a onda é pura decoração de transição, puro
+    efeito colateral de motion, então cai sob a mesma regra do resto do
+    site).
 
 ## Seção 4 — Propostas (mapa do Vale)
 
 **Papel**: transformar geografia real em argumento de proposta.
 
+- ⚠ Painéis em vidro — pedido do cliente ("efeitos em glass"): o painel
+  de texto do mapa desktop (`PainelParada`) e os cards do carrossel
+  mobile ganharam `border-border/40 bg-bg/35 backdrop-blur-lg` (antes
+  eram opacos/sem cartão) — ver `docs/marca.md`, Superfícies em vidro.
+  Separa visualmente o texto do fundo com textura da seção
+  (`PropostasWatermark`) sem competir com o mapa em si. ⚠ Primeira
+  versão usava `bg-bg/70` + `shadow-floating`; cliente pediu "mais
+  limpo" — tirou a sombra e baixou bem a opacidade do preenchimento,
+  deixando o blur fazer a separação visual sozinho. O badge de
+  sub-região dentro do painel também trocou de sólido
+  (`tone="secondary"`) para translúcido (`tone="glass"`, ver
+  `components/ui/Badge.tsx`), pra não competir com o próprio cartão.
 - Fonte de conteúdo: `docs/referencia.md`, seções 5 (pilares) e 7
   (geografia). `content/pilares.ts` continua sendo usado por outras
   seções do site (`Capa.tsx`, `features/intro/IntroOverlay.tsx`,
@@ -774,9 +855,39 @@ a borda da intro"). O componente `AnimatedPortraitFrame` e o arquivo
     `prefers-reduced-motion` mostra o número completo, parado, sem loop
     (mesma regra de toda animação do site).
 
-## Seção 5 — Quer saber mais?
+## Seção 5 — O que ele decide
+
+⚠ Não fazia parte das seções originais — pedido do cliente ("mais
+sério/institucional"), inspirado na seção 3.6 de
+`PROMPT_CLAUDE_CODE_SITE_V3_INSTITUCIONAL.md` ("O que faz um deputado
+estadual"), adaptado para o formato de página única do site atual (não
+virou rota própria).
+
+**Papel**: gerir expectativa antes de cobrar mandato — mostra o que é
+competência do Deputado Estadual, da Prefeitura/Câmara e da União.
+
+- Fundo `bg-bg` (claro), entre a seção Propostas (`bg-bg-muted`) e Quer
+  saber mais (`bg-primary`) — mantém a alternância clara/escura descrita
+  em `docs/marca.md`, "Proporção de uso".
+- Conteúdo: `content/deputado-estadual.ts` — genérico (divisão
+  federativa brasileira), não é fato biográfico nem proposta de
+  campanha, então não puxa de `docs/referencia.md`.
+- Componente: `components/ui/Accordion.tsx`, acordeão de item único
+  aberto por vez, primeiro item (Estado) já aberto por padrão.
+  Expansão via `grid-template-rows` (0fr → 1fr) em CSS puro — não usa
+  Framer Motion, então herda a regra de `prefers-reduced-motion` já
+  global (`app/globals.css`) sem precisar de tratamento especial.
+
+## Seção 6 — Quer saber mais?
 
 **Papel**: CTA final de mobilização.
+
+- ⚠ Painel em vidro — pedido do cliente ("tente colocar em outras
+  partes com efeito glass"): todo o bloco (eyebrow + título + texto +
+  botões) agora vive dentro de um cartão `border-text-inverse/15
+  bg-text-inverse/10 backdrop-blur-lg`, sem sombra, flutuando sobre o
+  `bg-primary` sólido da seção — mesma receita de vidro "limpo" do
+  painel de Propostas, adaptada pra fundo escuro.
 
 - Fundo escuro (`--color-primary` — Azul Vale, o fundo padrão de seção
   escura que não é hero nem rodapé). ⚠ Migração v2: era

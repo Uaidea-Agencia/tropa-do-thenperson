@@ -10,7 +10,7 @@ export function Propostas() {
       <div className="relative overflow-hidden">
         <PropostasWatermark />
 
-        <Container className="relative z-10 py-20 desktop:py-24">
+        <Container className="relative z-10 py-24 desktop:py-32">
           <header className="max-w-2xl">
             <p className="font-body text-eyebrow uppercase text-primary">Propostas</p>
             <h2 className="mt-3 font-heading text-h2 font-extrabold text-text">

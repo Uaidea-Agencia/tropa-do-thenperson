@@ -209,6 +209,36 @@ As três regras que resolvem quase tudo na v2:
    laranja puro em texto.
 3. O ciano nunca recebe texto branco, e sobre azul só aparece grande.
 
+## ⚠ Superfícies em vidro (glassmorphism)
+
+Não definido no manual original — proposta técnica (pedido do cliente:
+"deixar o site mais atual, com efeitos em glass"). Formaliza um padrão
+que já existia isolado na etiqueta flutuante da Capa
+(`components/ui/FloatingTag.tsx`) e nos pilares flutuantes
+(`components/ui/FloatingPilarTag.tsx`) — em vez de inventar um segundo
+idioma visual, estendemos o mesmo para nav e cards.
+
+- **Onde usar**: chrome de navegação (header fixo, menu mobile) e
+  painéis flutuantes que ficam sobre imagem/textura (cards da seção
+  Propostas, painel do mapa scroll-driven, carrossel mobile). **Onde não
+  usar**: nunca atrás de texto de botão/CTA (laranja precisa de fundo
+  sólido para bater WCAG — ver seção Acessibilidade) e nunca empilhado
+  em mais de um elemento por tela, para não virar decoração.
+- **Receita**: `bg-<token>/70–85 backdrop-blur-md`, com borda de 1px em
+  `border-<token>/60` para separar do fundo sem depender só do blur.
+  Alpha nunca abaixo de ~70% — mais transparente que isso deixa o
+  contraste do texto por cima dependente do que está atrás (imagem,
+  seção clara/escura), o que quebra as razões de contraste já
+  auditadas nesta página. Em fundo escuro:
+  `bg-primary-dark/75 backdrop-blur-md`; em fundo claro:
+  `bg-bg/70 backdrop-blur-md` ou `bg-bg-muted/70 backdrop-blur-sm`.
+- Sombra: `shadow-floating` (já um token) para separar o painel do que
+  está atrás, em vez de aumentar o blur.
+- É puramente visual/estático — não precisa de tratamento especial de
+  `prefers-reduced-motion` por si só, mas qualquer transição de abertura
+  (accordion, menu) que o acompanhe segue a regra normal da seção
+  Movimento.
+
 ## ⚠ Espaçamento e grid
 
 Não definido no manual original (é a próxima etapa da direção de arte).

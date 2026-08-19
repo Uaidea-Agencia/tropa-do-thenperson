@@ -104,7 +104,7 @@ function PainelParada({ parada, index, total, reducedMotion }: Readonly<PainelPa
   const Icon = PILAR_ICONS[parada.icon];
 
   return (
-    <div>
+    <div className="rounded-card border border-border/40 bg-bg/35 p-6 backdrop-blur-lg desktop:p-8">
       <p className="font-body text-caption font-medium uppercase tracking-wide text-text-muted">
         {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")} — {parada.eixo}
       </p>
@@ -116,7 +116,7 @@ function PainelParada({ parada, index, total, reducedMotion }: Readonly<PainelPa
           exit={reducedMotion ? undefined : { opacity: 0, y: -24 }}
           transition={{ duration: reducedMotion ? 0 : DURATION.block, ease: EASE_BRAND }}
         >
-          <Badge tone="secondary" className="mt-3">
+          <Badge tone="glass" className="mt-3">
             {SUB_REGIAO_LABEL[parada.subRegiao]}
           </Badge>
           <div className="mt-4 flex items-center gap-3">
@@ -223,13 +223,13 @@ function MobileCarousel({ reducedMotion, onNavigate }: Readonly<MobileCarouselPr
               onClick={() => handleSelect(index)}
               aria-pressed={ativo}
               aria-label={`${parada.cidade} — ${parada.eixo}: ${parada.titulo}${parada.base ? " · base do candidato" : ""}`}
-              className="w-[85%] shrink-0 snap-center rounded-card border border-border bg-bg p-5 text-left outline-none focus-visible:outline-2 focus-visible:outline-focus"
+              className="w-[85%] shrink-0 snap-center rounded-card border border-border/40 bg-bg/35 p-5 text-left backdrop-blur-lg outline-none focus-visible:outline-2 focus-visible:outline-focus"
             >
               <p className="font-body text-caption font-medium uppercase tracking-wide text-text-muted">
                 {String(index + 1).padStart(2, "0")} / {String(paradas.length).padStart(2, "0")} —{" "}
                 {parada.eixo}
               </p>
-              <Badge tone="secondary" className="mt-3">
+              <Badge tone="glass" className="mt-3">
                 {SUB_REGIAO_LABEL[parada.subRegiao]}
               </Badge>
               <div className="mt-4 flex items-center gap-3">

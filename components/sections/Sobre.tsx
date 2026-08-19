@@ -1,20 +1,10 @@
-import type { ReactElement } from "react";
 import { Container } from "@/components/layout/Container";
-import { MilestoneRow } from "@/features/scroll-reveal/MilestoneRow";
+import { TrajetoriaTimeline } from "@/features/scroll-reveal/TrajetoriaTimeline";
 import { milestones } from "@/content/milestones";
 
 export function Sobre() {
-  const rows: ReactElement[] = [];
-  let photoCount = 0;
-  for (const milestone of milestones) {
-    rows.push(
-      <MilestoneRow key={milestone.id} milestone={milestone} photoIndexOffset={photoCount} />,
-    );
-    photoCount += milestone.photos.length;
-  }
-
   return (
-    <section id="sobre" className="bg-bg py-20 desktop:py-28">
+    <section id="sobre" className="bg-bg py-24 desktop:py-32">
       <Container>
         <header className="max-w-2xl">
           <p className="font-body text-eyebrow uppercase text-marker-dark">Trajetória</p>
@@ -26,7 +16,9 @@ export function Sobre() {
           </p>
         </header>
 
-        <div className="mt-12 desktop:mt-16">{rows}</div>
+        <div className="mt-12 desktop:mt-16">
+          <TrajetoriaTimeline milestones={milestones} />
+        </div>
       </Container>
     </section>
   );

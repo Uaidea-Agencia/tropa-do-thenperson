@@ -61,9 +61,16 @@ desconstruí-la, nunca como descrição própria da região
 
 ## Oferta / escopo confirmado
 
-- Site institucional de campanha, **página única**, mobile-first, cinco
-  seções fixas: Intro → Capa → Sobre → Propostas → Quer saber mais?
-  (detalhamento em `docs/ui-web.md`).
+- Site institucional de campanha, **página única**, mobile-first, seis
+  seções fixas: Intro → Capa → Sobre → Propostas → O que ele decide →
+  Quer saber mais? (detalhamento em `docs/ui-web.md`).
+- **O que ele decide**: acordeão didático (`content/deputado-estadual.ts`)
+  separando o que é competência do Deputado Estadual, da Prefeitura/Câmara
+  Municipal e da União — conteúdo cívico genérico (divisão federativa
+  brasileira), não depende de `docs/referencia.md` por não ser fato
+  biográfico nem proposta de campanha. Objetivo: gerir expectativa antes
+  de cobrar mandato (inspirado na seção 3.6 de
+  `PROMPT_CLAUDE_CODE_SITE_V3_INSTITUCIONAL.md`).
 - **Objetivo primário**: converter visitante em apoiador dentro dos
   canais oficiais de mobilização (grupo de WhatsApp e Instagram — o
   candidato não tem canal de Telegram) — **não** é site de pedido de
