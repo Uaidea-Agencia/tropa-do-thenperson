@@ -42,12 +42,17 @@ export function Footer() {
         </Link>
       </Container>
 
-      <Container className="flex flex-col gap-1 border-t border-text-inverse/10 py-6 tablet:flex-row tablet:items-center tablet:justify-between">
-        <p className="text-caption text-text-inverse/50">
-          {site.candidateName} — {site.region}, base em {site.base}. Conteúdo de campanha.
-        </p>
-        <p className="text-caption text-text-inverse/50">
-          © {new Date().getFullYear()} {site.candidateName}. Todos os direitos reservados.
+      <Container className="flex flex-col gap-1 border-t border-text-inverse/10 py-6">
+        <div className="flex flex-col gap-1 tablet:flex-row tablet:items-center tablet:justify-between">
+          <p className="text-caption text-text-inverse/50">
+            {site.candidateName} — {site.region}, base em {site.base}. Conteúdo de campanha.
+          </p>
+          <p className="text-caption text-text-inverse/50">
+            © {new Date().getFullYear()} {site.candidateName}. Todos os direitos reservados.
+          </p>
+        </div>
+        <p className="text-caption text-text-inverse/40">
+          Partido {site.party} — {site.partyNumber} · CNPJ {site.partyCnpj}
         </p>
       </Container>
 

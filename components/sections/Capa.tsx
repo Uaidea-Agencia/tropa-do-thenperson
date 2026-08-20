@@ -3,7 +3,6 @@
 import { useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, useAnimationControls } from "motion/react";
-import { ChevronDown } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { FloatingTag } from "@/components/ui/FloatingTag";
 import { FloatingPilarTag } from "@/components/ui/FloatingPilarTag";
@@ -11,7 +10,9 @@ import { PeekingEye } from "@/components/ui/PeekingEye";
 import { TypewriterWord } from "@/components/ui/TypewriterWord";
 import { Button } from "@/components/ui/Button";
 import { SignatureLine } from "@/components/capa/SignatureLine";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { PROPOSTA_TAGS } from "@/content/propostas-tags";
+import { ctaLinks } from "@/content/cta-links";
 import { site } from "@/content/site";
 import { useIntroReady } from "@/features/intro/IntroGate";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
@@ -163,11 +164,11 @@ export function Capa() {
 
         <div className="mt-5">
           <Button
-            href="#quer-saber-mais"
+            href={ctaLinks.whatsapp.href ?? "#quer-saber-mais"}
             variant="primary"
-            icon={<ChevronDown size={18} aria-hidden="true" />}
+            icon={<WhatsAppIcon size={18} />}
           >
-            Quero fazer parte
+            Clique aqui
             <PeekingEye />
             <PeekingEye />
           </Button>

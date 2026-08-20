@@ -4,6 +4,7 @@ export const site = {
   state: "Minas Gerais",
   party: "Avante",
   partyNumber: "70",
+  partyCnpj: "68.491.694/0001-40",
   electoralNumber: "70333",
   region: "Vale do Jequitinhonha",
   base: "Almenara",

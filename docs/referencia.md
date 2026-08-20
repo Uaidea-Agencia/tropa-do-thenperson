@@ -111,6 +111,9 @@ a partir de duas entrevistas de alinhamento com o pré-candidato.
 - **Formato prioritário de conteúdo**: vídeo — o próprio candidato já
   identificou vídeo como o mais importante de todos os formatos.
 - **Número eleitoral**: 70333 (partido Avante, número 70).
+- **CNPJ do Avante**: 68.491.694/0001-40. Exibido no rodapé do site
+  (`components/layout/Footer.tsx`), no bloco de créditos legais junto
+  do nome do partido.
 - **Canais de mobilização confirmados**: grupo do WhatsApp
   (`https://chat.whatsapp.com/E37S9PNOadYCo0CmB9MrKz?s=cl&p=i&mlu=4&amv=0`) e Instagram
   (`https://www.instagram.com/thenperson/`). O candidato **não tem**

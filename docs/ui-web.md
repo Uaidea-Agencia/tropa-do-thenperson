@@ -355,10 +355,11 @@ parte', efeito sutil e divertido pra dar vontade de clicar").
   `prefers-reduced-motion`.
 - Aplicado nos CTAs que o pedido citou por nome — CTA "Grupo do
   WhatsApp" (`components/sections/QuerSaberMais.tsx`, dentro do
-  `MagneticButton`) e CTA "Quero fazer parte" da Capa
+  `MagneticButton`) e CTA "Clique aqui" da Capa (era "Quero fazer
+  parte" — ver mudança de texto e destino na Seção 2 acima)
   (`components/sections/Capa.tsx`, o botão principal do hero) — nos
   dois com **duas** instâncias de `<PeekingEye />` lado a lado (um par
-  de olhos, não um só) — e depois também no CTA "Quero fazer parte" do
+  de olhos, não um só) — e depois também no CTA "Clique aqui" do
   header/menu mobile (`HeaderCta`, em `components/layout/Header.tsx`,
   as duas instâncias do componente — nav e painel mobile — herdam
   automaticamente por serem o mesmo `Button`), com uma instância só e
@@ -739,7 +740,10 @@ a borda da intro"). O componente `AnimatedPortraitFrame` e o arquivo
     que "DO VALE" já recebe na etiqueta do nome logo acima, não uma cor
     nova.
 - Um CTA primário (cor `--color-cta`) visível sem precisar rolar —
-  aponta para a seção 5 (mobilização), não pede voto.
+  texto "Clique aqui", aponta direto pro grupo do WhatsApp
+  (`ctaLinks.whatsapp`), não pra seção 5 por âncora (pedido do cliente,
+  pra maximizar clique no grupo em vez de rolar até uma seção com duas
+  opções). Não pede voto — CTA continua sendo mobilização.
 
 ## Seção 3 — Sobre (trajetória)
 

@@ -7,6 +7,8 @@ import { motion, useAnimationControls } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { Container } from "./Container";
 import { Button } from "@/components/ui/Button";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { ctaLinks } from "@/content/cta-links";
 import { site } from "@/content/site";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
@@ -70,9 +72,12 @@ function NavItem({
 }
 
 /**
- * CTA do header ("Quero fazer parte") ganha um destaque ao chegar na
- * seção "Quer saber mais" — o próprio destino do link. Um "pop" (escala
- * + brilho) uma vez, no instante em que `isAtCta` vira true, igual ao
+ * CTA do header ("Clique aqui") aponta direto pro grupo do WhatsApp
+ * (`ctaLinks.whatsapp`), não mais pra seção "Quer saber mais" — mas
+ * `isAtCta` continua de olho em quando essa seção entra em vista (o
+ * destino "oficial" de mobilização) só pra decidir o destaque visual,
+ * desacoplado de pra onde o clique realmente leva. Um "pop" (escala +
+ * brilho) uma vez, no instante em que `isAtCta` vira true, igual ao
  * mesmo gesto que a etiqueta do nome já faz na Capa quando a linha de
  * assinatura chega nela (`components/sections/Capa.tsx`, `handleArrive`)
  * — reaproveitando o gesto em vez de inventar um novo. Some junto um
@@ -117,13 +122,14 @@ function HeaderCta({
       } ${wrapperClassName}`}
     >
       <Button
-        href="#quer-saber-mais"
+        href={ctaLinks.whatsapp.href ?? "#quer-saber-mais"}
         variant="primary"
         size={size}
+        icon={<WhatsAppIcon size={size === "sm" ? 14 : 16} />}
         className={buttonClassName}
         onClick={onClick}
       >
-        Quero fazer parte
+        Clique aqui
         <PeekingEye size={size === "sm" ? 14 : 16} />
         <PeekingEye size={size === "sm" ? 14 : 16} />
       </Button>
