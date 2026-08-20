@@ -7,6 +7,8 @@ import { DeputadoEstadual } from "@/components/sections/DeputadoEstadual";
 import { QuerSaberMais } from "@/components/sections/QuerSaberMais";
 import { Footer } from "@/components/layout/Footer";
 import { BackToTopButton } from "@/features/back-to-top/BackToTopButton";
+import { WhatsAppFloatButton } from "@/features/back-to-top/WhatsAppFloatButton";
+import { ExitIntentWhatsApp } from "@/features/exit-intent/ExitIntentWhatsApp";
 
 export default function Home() {
   return (
@@ -19,6 +21,8 @@ export default function Home() {
       <QuerSaberMais />
       <Footer />
       <BackToTopButton />
+      <WhatsAppFloatButton />
+      <ExitIntentWhatsApp />
     </Intro>
   );
 }

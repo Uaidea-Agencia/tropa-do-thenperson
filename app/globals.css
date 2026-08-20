@@ -33,6 +33,11 @@
   --color-party-orange: #d07900;
   --color-party-blue: #68a4ae;
 
+  /* Verde oficial do WhatsApp — uso restrito, ver docs/marca.md,
+     "Cor do WhatsApp — uso restrito". */
+  --color-whatsapp: #25d366;
+  --color-whatsapp-dark: #128c7e;
+
   --color-mapa-verde-1: #eef3ea;
   --color-mapa-verde-2: #cddcc2;
   --color-mapa-verde-3: #a3c393;
@@ -83,6 +88,9 @@
 
   --color-party-orange: var(--color-party-orange);
   --color-party-blue: var(--color-party-blue);
+
+  --color-whatsapp: var(--color-whatsapp);
+  --color-whatsapp-dark: var(--color-whatsapp-dark);
 
   --color-mapa-verde-1: var(--color-mapa-verde-1);
   --color-mapa-verde-2: var(--color-mapa-verde-2);
@@ -136,10 +144,28 @@
   --text-eyebrow--font-weight: 600;
 }
 
+/* O fundo full-bleed do marco "Origem do desejo político" sangra até a
+   borda da viewport via `left/right: calc(50% - 50vw)` (ver
+   features/scroll-reveal/MilestoneRow.tsx) — isso pode ultrapassar 100%
+   da largura por causa da barra de rolagem. Corta aqui (html + body,
+   propagação de overflow do body sozinho não é confiável o bastante
+   entre browsers), não no container do marco — que precisa ficar sem
+   overflow declarado, ou o truque de sangria fica sem efeito.
+   ⚠ `clip`, não `hidden`: `overflow-x: hidden` (testado) faz o browser
+   tratar html/body como scroll container próprio pro cálculo de
+   `position: sticky`, e quebra o scroll-pin do mapa em Propostas
+   (`components/propostas/PropostasScroll.tsx`) — o painel para de
+   travar e o mapa não fica mais "andando" com o scroll. `clip` corta a
+   sangria do mesmo jeito sem criar esse scroll container. */
+html {
+  overflow-x: clip;
+}
+
 body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-body);
+  overflow-x: clip;
 }
 
 section[id] {

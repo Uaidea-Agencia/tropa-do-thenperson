@@ -6,9 +6,13 @@ import Link from "next/link";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { BUTTON_BASE_CLASSES, BUTTON_SIZE_CLASSES } from "./Button";
 
-const MAGNET_RANGE = 90;
-const PULL_STRENGTH = 0.35;
-const MAX_PULL = 22;
+// Pedido do cliente: "aumente o efeito magnético do botão do
+// WhatsApp" — único consumidor deste componente, então a mudança fica
+// sem risco de afetar outro CTA. Raio maior (o campo começa a puxar de
+// mais longe), puxão mais forte e limite de deslocamento maior.
+const MAGNET_RANGE = 130;
+const PULL_STRENGTH = 0.5;
+const MAX_PULL = 34;
 
 interface MagneticButtonProps {
   href: string;

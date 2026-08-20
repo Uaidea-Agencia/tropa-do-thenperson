@@ -1,5 +1,6 @@
-import type { AnchorHTMLAttributes, ReactNode } from "react";
+import type { AnchorHTMLAttributes, MouseEvent, ReactNode } from "react";
 import Link from "next/link";
+import { scrollToHash } from "@/lib/scroll-to-hash";
 
 export type ButtonVariant = "primary" | "secondary" | "outline-inverse";
 export type ButtonSize = "md" | "sm";
@@ -38,12 +39,22 @@ export function Button({
   icon,
   className = "",
   children,
+  onClick,
   ...linkProps
 }: Readonly<ButtonProps>) {
   const isExternal = /^https?:\/\//.test(href);
+
+  function handleClick(event: MouseEvent<HTMLAnchorElement>) {
+    // Garante que o CTA sempre role, mesmo clicando de novo na mesma
+    // âncora — ver lib/scroll-to-hash.ts.
+    if (scrollToHash(href)) event.preventDefault();
+    onClick?.(event);
+  }
+
   return (
     <Link
       href={href}
+      onClick={handleClick}
       className={`${BUTTON_BASE_CLASSES} ${BUTTON_VARIANT_CLASSES[variant]} ${BUTTON_SIZE_CLASSES[size]} ${className}`}
       {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       {...linkProps}

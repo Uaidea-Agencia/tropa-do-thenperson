@@ -7,6 +7,7 @@ import { ChevronDown } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { FloatingTag } from "@/components/ui/FloatingTag";
 import { FloatingPilarTag } from "@/components/ui/FloatingPilarTag";
+import { PeekingEye } from "@/components/ui/PeekingEye";
 import { TypewriterWord } from "@/components/ui/TypewriterWord";
 import { Button } from "@/components/ui/Button";
 import { SignatureLine } from "@/components/capa/SignatureLine";
@@ -149,7 +150,13 @@ export function Capa() {
           </motion.div>
         </div>
 
-        <h1 className="mt-10 max-w-2xl font-heading text-h1 font-black text-text-inverse tablet:mt-24 desktop:mt-32">
+        {/* mt-16, não mt-10: a etiqueta do nome é `absolute` sob o
+            retrato (não soma na altura do wrapper) e no mobile
+            transborda ~47px abaixo dele — com mt-10 (40px) o "DO VALE"
+            encostava no título ("comendo" o H1, ver feedback do
+            cliente). mt-16 (64px) dá ~17px de respiro sem empurrar o
+            CTA pra fora da viewport em telas curtas. */}
+        <h1 className="mt-16 max-w-2xl font-heading text-h1 font-black text-text-inverse tablet:mt-24 desktop:mt-32">
           O <span className="text-accent">Vale do Jequitinhonha</span> precisa de{" "}
           <TypewriterWord words={HEADLINE_WORDS} />.
         </h1>
@@ -161,6 +168,8 @@ export function Capa() {
             icon={<ChevronDown size={18} aria-hidden="true" />}
           >
             Quero fazer parte
+            <PeekingEye />
+            <PeekingEye />
           </Button>
         </div>
       </Container>

@@ -28,7 +28,17 @@ export function PropostasScroll() {
 
   function handleSelect(index: number) {
     const container = containerRef.current;
-    if (!container) return;
+    // This same handler is passed as `onNavigate` to `MobileCarousel`
+    // below `desktop` — where this pinned-scroll container is
+    // `hidden` (display:none), so `offsetHeight` reads 0 and
+    // `getBoundingClientRect()` is all zeros. Without this guard the
+    // math below still runs on those zeroed values and calls
+    // `window.scrollTo` with a bogus target, yanking the whole page up
+    // or down every time a card is tapped or swiped — the carousel
+    // itself already scrolls the right card into view on its own, this
+    // handler only needs to run the desktop page-scroll when the
+    // pinned container is actually the thing on screen.
+    if (!container || container.offsetHeight === 0) return;
     const clamped = Math.min(paradas.length - 1, Math.max(0, index));
     const fraction = (clamped + 0.5) / paradas.length;
     // getBoundingClientRect + scrollY, not offsetTop: offsetTop is relative

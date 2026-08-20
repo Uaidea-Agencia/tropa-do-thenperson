@@ -1,23 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
+import { useScrolledPastHero } from "@/hooks/useScrolledPastHero";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 export function BackToTopButton() {
-  const [visible, setVisible] = useState(false);
+  const visible = useScrolledPastHero();
   const prefersReducedMotion = usePrefersReducedMotion();
-
-  useEffect(() => {
-    const capa = document.getElementById("capa");
-    if (!capa) return;
-
-    const observer = new IntersectionObserver(([entry]) => setVisible(!entry.isIntersecting), {
-      rootMargin: "-120px 0px 0px 0px",
-    });
-    observer.observe(capa);
-    return () => observer.disconnect();
-  }, []);
 
   const handleClick = () => {
     window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" });

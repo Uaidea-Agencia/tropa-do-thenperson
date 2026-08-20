@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "motion/react";
+import { motion, useAnimationControls } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { Container } from "./Container";
 import { Button } from "@/components/ui/Button";
@@ -11,6 +11,8 @@ import { site } from "@/content/site";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { DURATION, EASE_BRAND } from "@/lib/motion";
+import { scrollToHash } from "@/lib/scroll-to-hash";
+import { PeekingEye } from "@/components/ui/PeekingEye";
 
 const NAV_LINKS = [
   { id: "sobre", href: "#sobre", label: "Sobre mim" },
@@ -38,10 +40,15 @@ function NavItem({
   onClick,
   className = "",
 }: Readonly<NavItemProps>) {
+  const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (scrollToHash(href)) event.preventDefault();
+    onClick?.();
+  };
+
   return (
     <Link
       href={href}
-      onClick={onClick}
+      onClick={handleClick}
       aria-current={active ? "true" : undefined}
       className={`relative rounded-xs pb-1 transition-colors duration-150 ease-brand focus-visible:outline-2 focus-visible:outline-focus ${
         active ? "text-accent-light" : "text-text-inverse/75 hover:text-text-inverse"
@@ -62,9 +69,72 @@ function NavItem({
   );
 }
 
+/**
+ * CTA do header ("Quero fazer parte") ganha um destaque ao chegar na
+ * seção "Quer saber mais" — o próprio destino do link. Um "pop" (escala
+ * + brilho) uma vez, no instante em que `isAtCta` vira true, igual ao
+ * mesmo gesto que a etiqueta do nome já faz na Capa quando a linha de
+ * assinatura chega nela (`components/sections/Capa.tsx`, `handleArrive`)
+ * — reaproveitando o gesto em vez de inventar um novo. Some junto um
+ * anel estático enquanto a seção segue ativa, que é o equivalente sob
+ * `prefers-reduced-motion`: sem pop, mas o botão ainda fica marcado.
+ */
+function HeaderCta({
+  isAtCta,
+  reducedMotion,
+  pulseOnArrive = false,
+  size = "sm",
+  wrapperClassName = "",
+  buttonClassName = "",
+  onClick,
+}: Readonly<{
+  isAtCta: boolean;
+  reducedMotion: boolean;
+  pulseOnArrive?: boolean;
+  size?: "sm" | "md";
+  wrapperClassName?: string;
+  buttonClassName?: string;
+  onClick?: () => void;
+}>) {
+  const controls = useAnimationControls();
+  const wasAtCta = useRef(false);
+
+  useEffect(() => {
+    if (pulseOnArrive && isAtCta && !wasAtCta.current && !reducedMotion) {
+      void controls.start({
+        scale: [1, 1.12, 1],
+        transition: { duration: 0.5, ease: EASE_BRAND },
+      });
+    }
+    wasAtCta.current = isAtCta;
+  }, [isAtCta, pulseOnArrive, reducedMotion, controls]);
+
+  return (
+    <motion.div
+      animate={controls}
+      className={`rounded-pill transition-shadow duration-150 ease-brand ${
+        isAtCta ? "ring-2 ring-text-inverse/80" : "ring-2 ring-transparent"
+      } ${wrapperClassName}`}
+    >
+      <Button
+        href="#quer-saber-mais"
+        variant="primary"
+        size={size}
+        className={buttonClassName}
+        onClick={onClick}
+      >
+        Quero fazer parte
+        <PeekingEye size={size === "sm" ? 14 : 16} />
+        <PeekingEye size={size === "sm" ? 14 : 16} />
+      </Button>
+    </motion.div>
+  );
+}
+
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const activeId = useActiveSection(NAV_IDS);
+  const isAtCta = activeId === "quer-saber-mais";
   const reducedMotion = usePrefersReducedMotion();
 
   const closeMenu = () => setMenuOpen(false);
@@ -93,6 +163,9 @@ export function Header() {
           <div className="flex items-center gap-3">
             <Link
               href="#capa"
+              onClick={(event) => {
+                if (scrollToHash("#capa")) event.preventDefault();
+              }}
               className="shrink-0 rounded-xs focus-visible:outline-2 focus-visible:outline-focus"
             >
               <Image
@@ -101,24 +174,24 @@ export function Header() {
                 width={800}
                 height={272}
                 priority
-                className="h-12 w-auto nav:h-14"
+                className="h-10 w-auto nav:h-12"
               />
             </Link>
 
-            <span className="hidden h-6 w-px bg-text-inverse/20 nav:block" aria-hidden="true" />
+            <span className="hidden h-5 w-px bg-text-inverse/20 nav:block" aria-hidden="true" />
 
-            <div className="relative hidden h-5 w-13 nav:block">
+            <div className="relative hidden h-4 w-10 nav:block">
               <Image
                 src="/images/identidade/avante-mono-branco.png"
                 alt={`Filiado ao Avante — ${site.partyNumber}`}
                 fill
-                sizes="52px"
+                sizes="40px"
                 className="object-contain object-left"
               />
             </div>
           </div>
 
-          <nav className="hidden items-center gap-5 nav:flex" aria-label="Seções do site">
+          <nav className="hidden items-center gap-3 nav:flex" aria-label="Seções do site">
             {NAV_LINKS.map((link) => (
               <NavItem
                 key={link.href}
@@ -126,16 +199,14 @@ export function Header() {
                 label={link.label}
                 active={activeId === link.id}
                 reducedMotion={reducedMotion}
-                className="font-body text-button"
+                className="font-body text-caption"
               />
             ))}
           </nav>
 
           <div className="flex items-center gap-2">
             <div className="hidden xs:block">
-              <Button href="#quer-saber-mais" variant="primary" size="sm">
-                Quero fazer parte
-              </Button>
+              <HeaderCta isAtCta={isAtCta} reducedMotion={reducedMotion} pulseOnArrive size="sm" />
             </div>
 
             <button
@@ -144,12 +215,12 @@ export function Header() {
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
               aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
-              className="flex h-10 w-10 items-center justify-center rounded-pill text-text-inverse nav:hidden"
+              className="flex h-9 w-9 items-center justify-center rounded-pill text-text-inverse nav:hidden"
             >
               {menuOpen ? (
-                <X size={22} aria-hidden="true" />
+                <X size={20} aria-hidden="true" />
               ) : (
-                <Menu size={22} aria-hidden="true" />
+                <Menu size={20} aria-hidden="true" />
               )}
             </button>
           </div>
@@ -173,14 +244,14 @@ export function Header() {
                 className="px-2 py-4 font-heading text-h3 font-bold"
               />
             ))}
-            <Button
-              href="#quer-saber-mais"
-              variant="primary"
-              className="mt-6 w-full"
+            <HeaderCta
+              isAtCta={isAtCta}
+              reducedMotion={reducedMotion}
+              size="md"
+              wrapperClassName="mt-6 w-full"
+              buttonClassName="w-full"
               onClick={closeMenu}
-            >
-              Quero fazer parte
-            </Button>
+            />
           </Container>
         </div>
       )}

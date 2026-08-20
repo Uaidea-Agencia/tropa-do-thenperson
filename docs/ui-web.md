@@ -48,27 +48,49 @@ depois do primeiro corte do site (`components/layout/Header.tsx`).
 - Conteúdo: logo do candidato à esquerda, colorida, fundo removido de
   verdade (`thenperson-colorido-sem-fundo.png` — ver `docs/marca.md`,
   seção Logo > Candidato), sempre visível (substituiu o ícone quadrado +
-  nome em texto separado — agora é uma peça só), aumentada a pedido do
-  cliente ("aumente mais a logo no header" — `h-12` no mobile, `h-14` a
-  partir de `nav`, era `h-10`/`h-11`); logo do Avante (variante
-  monocromática branca oficial, ver `docs/marca.md`, seção Logo >
-  Avante) logo em seguida, só a partir de `nav` (960px — ver breakpoint
-  abaixo). Navegação para as seções no centro, só a partir de `nav` —
-  ⚠ pedido do cliente ("diminua o tamanho dos itens na nav"): o texto do
-  link usa o token `text-button` (14–15px) em vez de `text-body`
-  (16–17px), com `gap-5` entre eles em vez de `gap-6` — ficou mais denso
-  depois que o item "O que ele decide" entrou como quarto link. CTA
-  de mobilização à direita (`Button` `size="sm"`, aponta para
-  `#quer-saber-mais`) — visível a partir de `xs` (480px) até sumir de
-  novo a partir de `nav` (vira parte do painel do menu); abaixo de `xs`
-  some por completo e mora só dentro do menu responsivo. ⚠ Esse `xs`
-  já foi 400px; pedido do cliente: "no tamanho 430 de tela pode colocar
-  o botão quero fazer parte já dentro do menu" — ou seja, em 430px o
-  botão ainda aparecia solto no header, e o cliente queria que essa
-  largura já contasse como "só no menu". Subido para 480px, com folga
-  acima de 430px. No lugar do CTA + nav inline, abaixo de `nav`, um
-  botão hambúrguer. Nunca pedido de voto (mesma regra do resto do
-  site).
+  nome em texto separado — agora é uma peça só). Passou por dois pedidos
+  opostos de tamanho: primeiro "aumente mais a logo no header" (`h-10`
+  → `h-12` no mobile, `h-11` → `h-14` a partir de `nav`), depois
+  "diminua um pouco o tamanho dos itens no header" (recuou pra `h-10`
+  mobile / `h-12` a partir de `nav` — não voltou ao tamanho original,
+  ficou entre os dois pedidos); logo do Avante (variante monocromática
+  branca oficial, ver `docs/marca.md`, seção Logo > Avante) logo em
+  seguida, só a partir de `nav` (960px — ver breakpoint abaixo),
+  encolhida na mesma proporção do segundo pedido (`h-5 w-13` → `h-4
+  w-10`). Navegação para as seções no centro, só a partir de `nav` —
+  ⚠ pedido do cliente, em três rodadas de "diminua o tamanho dos itens
+  na nav/menu": o texto do link começou em `text-body` (16–17px) →
+  `text-button` (14–15px) → **`text-caption`** (12–13px, o passo mais
+  fino que `docs/marca.md` define — não dá pra encolher mais sem sair
+  da escala tipográfica), com o `gap` acompanhando a cada rodada
+  (`gap-6` → `gap-5`, quando o item "O que ele decide" entrou como
+  quarto link → `gap-4` → **`gap-3`**). Nenhum dos tokens usados é o
+  "certo" pro papel de link de navegação (`text-button` é pensado pra
+  texto de botão, `text-caption` pra legenda) — são reaproveitados só
+  pelo tamanho, porque nenhum token de `docs/marca.md` foi desenhado
+  especificamente pra nav; entre inventar um tamanho solto (proibido,
+  ver `CLAUDE.md`) e reaproveitar um token existente pelo valor de
+  `font-size`, reaproveitar ganha. CTA de mobilização à direita
+  (`Button` `size="sm"`, aponta para `#quer-saber-mais`) — visível a
+  partir de `xs` (480px) até sumir de novo a partir de `nav` (vira parte
+  do painel do menu); abaixo de `xs` some por completo e mora só dentro
+  do menu responsivo. ⚠ Esse `xs` já foi 400px; pedido do cliente: "no
+  tamanho 430 de tela pode colocar o botão quero fazer parte já dentro
+  do menu" — ou seja, em 430px o botão ainda aparecia solto no header, e
+  o cliente queria que essa largura já contasse como "só no menu".
+  Subido para 480px, com folga acima de 430px. No lugar do CTA + nav
+  inline, abaixo de `nav`, um botão hambúrguer (`h-9 w-9`, ícone `20px`
+  — também reduzido no pedido mais recente, era `h-10 w-10`/`22px`).
+  Nunca pedido de voto (mesma regra do resto do site).
+  - ⚠ **O que não encolheu, de propósito**: a altura da própria barra
+    (`h-16` no `Container` interno) ficou intocada — ela é a mesma
+    medida usada em `top-16` do painel do menu mobile e em
+    `scroll-margin-top: 4rem` (`app/globals.css`) pra todo `section[id]`
+    não nascer escondida atrás do header; mudar só o `h-16` sem
+    atualizar as outras duas referências é exatamente o bug já
+    documentado acima ("Bug já corrigido, causa não óbvia") se voltar a
+    acontecer por outro caminho. "Diminua um pouco os itens no header"
+    foi lido como os elementos dentro da barra, não a barra em si.
 - **Breakpoint próprio do menu**: `--breakpoint-nav` (`app/globals.css`)
   — diferente do `tablet` (640px) usado no resto do site, porque nessa
   largura o header já tem logo + Avante + 3 links + CTA competindo por
@@ -143,6 +165,208 @@ já volta pro topo, mas ele queria um atalho mais rápido/visível.
   (`"auto"`) sob `prefers-reduced-motion`.
 - Continua no DOM sempre (`aria-hidden`/`tabIndex` alternam com a
   visibilidade) — não soma nem remove elemento a cada scroll.
+- ⚠ **Só este botão** esconde/mostra com o scroll. O botão flutuante de
+  WhatsApp ao lado (`WhatsAppFloatButton`) parou de compartilhar esse
+  comportamento — ver "Sempre visível desde o início" na seção
+  seguinte.
+
+## Ícones caindo do botão de WhatsApp
+
+⚠ Proposta técnica — pedido do cliente ("faça cair os ícones do
+WhatsApp no botão flutuante, de pouco em pouco pra não parecer spam";
+refinado depois: "pegue lá do início da view" — a queda passou a
+começar no topo da área visível, não só dentro do próprio botão).
+
+- `features/back-to-top/WhatsAppFloatButton.tsx`: de vez em quando (a
+  cada 6–11s, aleatório, um de cada vez) uma cópia pequena do próprio
+  ícone (`WhatsAppIcon`, verde oficial — ver seção "Ícone do WhatsApp"
+  logo abaixo) nasce logo abaixo do header (`START_FROM_VIEWPORT_TOP_PX`,
+  76px) e cai até pousar exatamente no topo do próprio botão
+  (`BUTTON_TOP_FROM_VIEWPORT_BOTTOM_PX`, 120px — `bottom-19` + `h-11`),
+  girando enquanto cai. A distância real (`window.innerHeight` menos os
+  dois offsets acima) é medida a cada disparo — a duração da queda
+  (1.6–3s, proporcional à distância) acompanha, pra não ficar rápido
+  demais numa tela alta nem devagar demais numa baixa.
+  - Mesma linguagem de queda das bolhas de "click" do cursor
+    customizado (`components/ui/CustomCursor.tsx`, ver seção "Cursor
+    personalizado" acima), adaptada pra percurso longo: `y` é um tween
+    simples de dois pontos (`ease: "easeIn"`, acelerando — fisicamente
+    certo pra uma queda mais longa), `opacity`/`rotate`/`scale` têm
+    keyframes próprios via `transition` por propriedade (framer motion
+    aceita overrides por chave), não presos ao mesmo `times` do `y`.
+  - **Ao pousar** (`onAnimationComplete`), o ícone principal do botão
+    dá um pulso de "chegou" (`scale: [1, 1.25, 1]`) — mesmo gesto já
+    usado no CTA do header quando a seção alvo chega (`HeaderCta`,
+    `pulseOnArrive`), reaproveitado em vez de inventado.
+- **O intervalo largo e aleatório continua sendo a peça central do
+  pedido** ("não parecer spam") — nada de loop curto ou fixo. Só um
+  ícone por vez (a cadência natural já garante isso: a queda mais longa
+  ainda é bem mais curta que o intervalo de 6–11s entre uma e outra).
+- Só agenda fora de `prefers-reduced-motion` — não depende mais de
+  nenhum estado de scroll (ver "Sempre visível desde o início" logo
+  abaixo: o botão em si não tem mais um estado "escondido" que faria
+  sentido pausar por).
+
+### Sempre visível desde o início
+
+⚠ Proposta técnica — pedido do cliente ("quero que o botão do WhatsApp
+flutuante já apareça no início da página"). Até aqui o botão de
+WhatsApp escondia/mostrava em lockstep com o "voltar ao topo"
+(`useScrolledPastHero()`, só aparecia depois de passar da Capa — ver
+seção "Botão 'voltar ao topo'" acima). Removido só pra este botão: ele
+renderiza visível e clicável desde o primeiro paint, sem `aria-hidden`
+nem `tabIndex` condicionais — não faz sentido pra um atalho de
+mobilização ficar escondido logo na primeira dobra. O "voltar ao topo"
+continua escondido até passar da Capa (ali sim faz sentido: não tem
+"topo" pra voltar enquanto já se está nele). O único estado que ainda
+"esconde" o botão de WhatsApp é a Intro cobrindo a tela inteira —
+mesma regra de todo o resto da página (`components/sections/Intro.tsx`),
+não algo específico deste componente.
+
+## Ícone do WhatsApp
+
+⚠ Proposta técnica — pedido do cliente, em duas rodadas. Primeiro
+"deixe o botão do WhatsApp com o ícone do WhatsApp" (antes usava
+`MessageCircle` do Lucide, um balão de mensagem genérico) — trocado por
+uma reinterpretação em traço própria, na paleta do candidato (mesma
+lógica do `InstagramIcon`). Depois, mais direto: "o ícone do WhatsApp
+não é esse, quero o verdinho original" — a reinterpretação em traço
+saiu, entrou o selo real (círculo verde + glifo branco). Ver
+`docs/marca.md`, seção "Cor do WhatsApp — uso restrito", pra o registro
+completo de por que isso é uma exceção deliberada à regra geral de
+paleta, não um esquecimento.
+
+- `components/icons/WhatsAppIcon.tsx`: círculo `--color-whatsapp`
+  (`#25D366`, verde oficial) com o glifo do fone em branco por cima —
+  não mais `currentColor`/paleta do candidato. Dois `variant`:
+  - `"badge"` (padrão) — desenha o próprio círculo verde, pra usar
+    sobre qualquer fundo que não seja já verde: CTA "Grupo do
+    WhatsApp" (continua laranja — ver Seção 6 abaixo, essa parte do
+    pedido não mudou), selo do aviso de saída.
+  - `"glyph"` — só o glifo branco, sem fundo próprio, pra usar sobre
+    uma superfície que já É o verde: o ícone principal do botão
+    flutuante, agora que o próprio botão é `bg-whatsapp` (ver seção
+    seguinte). Os ícones que caem continuam `"badge"` (têm fundo
+    próprio, viajam soltos pela tela).
+- Aplicado em todo CTA de WhatsApp do site, pra consistência visual
+  entre eles: botão flutuante
+  (`features/back-to-top/WhatsAppFloatButton.tsx`), CTA "Grupo do
+  WhatsApp" em "Quer saber mais" (`components/sections/QuerSaberMais.tsx`,
+  `MagneticButton` e o `CtaButton` de reserva pro estado "em breve") e o
+  selo + botão dentro do aviso de saída (ver seção seguinte).
+
+## Aviso de saída (exit-intent)
+
+⚠ Proposta técnica — pedido do cliente, em três rodadas. Primeiro:
+"notificação sutil ao querer sair da página, de pouco em pouco, puxando
+pro grupo do WhatsApp" + "tem que fazer um barulho de mensagem do
+WhatsApp" + "mostre um corpo de mensagem parecido com o do WhatsApp,
+com a fotinha do Thenperson". Depois, dois relatos de bug em sequência
+("não funcionou" → "continua não aparecendo" — ver o item de bug
+abaixo). Por último, quantificando o que "de pouco em pouco" queria
+dizer: "de 1 em 1 min" — substituiu o ritmo anterior (no máximo 2
+aparições por sessão de aba) por uma recorrência de verdade.
+
+- `features/exit-intent/ExitIntentWhatsApp.tsx` +
+  `hooks/useExitIntent.ts`: **dois gatilhos independentes**, o mesmo
+  cooldown de 60s (`SHOW_INTERVAL_MS`) governando os dois — nenhum dos
+  dois dispara de novo antes de 60s do último aviso, não importa qual
+  dos dois foi:
+  1. Exit-intent — o cursor sai da janela por cima (rumo à barra de
+     endereço/abas), sinal clássico de "vai fechar a aba ou trocar de
+     site". **Só existe em desktop** — não há equivalente confiável em
+     touch (padrão da indústria pra esse tipo de aviso, não uma lacuna
+     desta implementação).
+  2. Timer periódico (`setInterval(handleTrigger, SHOW_INTERVAL_MS)`)
+     — dispara sozinho a cada 60s, é o que garante o "de 1 em 1 min" de
+     verdade mesmo pra quem nunca leva o mouse pro topo da tela.
+  - ⚠ **Duas rodadas de bug relatado no exit-intent** — histórico
+    completo comentado em `hooks/useExitIntent.ts`, resumo aqui: (1)
+    `mouseout` no `document` filtrado por `relatedTarget === null` →
+    "não funcionou"; (2) trocado só por `mouseleave` em
+    `document.documentElement` (mesmo evento que
+    `components/ui/CustomCursor.tsx` usa com sucesso pra esconder a
+    seta customizada) com `clientY <= 0` estrito → "continua não
+    aparecendo". Nenhuma das duas foi testada de ponta a ponta com um
+    gesto real de mouse (só com evento sintético via `dispatchEvent`,
+    que prova o handler, não o disparo real). Correção: os **dois**
+    listeners juntos (rede dupla), e uma faixa de tolerância de 40px no
+    topo (`TOP_EDGE_TOLERANCE_PX`) em vez de exigir o pixel exato —
+    suspeita mais forte pro "continua não aparecendo" é escala de tela
+    fracionária do Windows (125%/150%, comum) fazendo o navegador nunca
+    cravar `clientY <= 0` de verdade. Validado depois com um gesto de
+    mouse real (não sintético) contra o servidor de dev rodando de
+    verdade.
+- Aparece como um cartão no topo da tela, logo abaixo do header
+  (`top-19`, mesmo raciocínio de espaçamento do botão de WhatsApp
+  flutuante), fundo `--color-primary-dark` — não colide com os botões
+  flutuantes do canto inferior direito.
+- **Corpo em formato de mensagem de WhatsApp** — avatar redondo
+  (`institucional-01.jpg`, o retrato de estúdio já catalogado em
+  `docs/ui-web.md`, seção "Direção fotográfica", item 1, especificamente
+  pra "rosto pequeno" — não o recorte `institucional-03-cutout.webp`
+  usado na Capa/Intro, que é corpo inteiro sem fundo, não um rosto
+  fechado) com um selo `WhatsAppIcon` sobreposto no canto (verde
+  oficial — ver seção "Ícone do WhatsApp" acima), nome do candidato em
+  negrito, "agora" como horário, e o texto da mensagem abaixo — não é
+  uma janela de app real, é um cartão estilizado *no layout* de uma
+  notificação de chat (avatar + nome + selo + texto + hora), pensado
+  pra ler como "mensagem chegando" sem imitar o ícone/UI real do app.
+- **Som de aviso** (`lib/play-chime.ts`, `playNotificationChime`) — dois
+  tons curtos sintetizados via Web Audio API (~350ms, intervalo de
+  quinta justa), tocados no instante em que o cartão abre. **Não** é o
+  som real de notificação do WhatsApp — reproduzir o áudio proprietário
+  do app seria problema de marca registrada, não só de peso de página;
+  é um "tim-tim" original que só evoca a mesma sensação. Silencioso e
+  sem erro se o navegador bloquear áudio sem gesto prévio do usuário
+  (política de autoplay — `mouseleave`, o próprio gatilho do
+  exit-intent, não conta como gesto "confiável" em todo navegador,
+  então em algumas sessões o som simplesmente não toca; o cartão
+  continua funcionando normalmente do mesmo jeito).
+- Copy ditada pelo cliente especificamente pra este aviso ("Quero
+  apresentar minhas ideias para você. Entra agora mesmo no grupo do
+  WhatsApp!") — diferente da frase de `docs/tom-de-voz.md`/Seção 6 usada
+  no resto do site, registrada aqui como a fonte dela.
+- **"De 1 em 1 min"**: cooldown único de 60s compartilhado pelos dois
+  gatilhos (`lastShownAtRef`, em memória — não `sessionStorage`, dá pra
+  simplificar porque não existe mais "limite por sessão" nenhum, só o
+  cooldown), e auto-esconde depois de 9s se ninguém interagir. ⚠
+  Diferente do ritmo anterior: fechar manualmente (X ou o próprio CTA)
+  só fecha *aquela* aparição — não suprime o resto da sessão. Se
+  suprimisse, "de 1 em 1 min" nunca voltaria a acontecer depois do
+  primeiro X, o que contradiz o próprio pedido de recorrência.
+- Gated por `useIntroReady()` (`features/intro/IntroGate.tsx`) — não
+  dispara enquanto a Intro ainda está cobrindo a tela.
+
+## Olhinho nos CTAs de mobilização
+
+⚠ Proposta técnica — pedido do cliente ("um olhinho mexendo pra lá e
+pra cá dentro do botão do grupo do WhatsApp e do botão 'quero fazer
+parte', efeito sutil e divertido pra dar vontade de clicar").
+
+- `components/ui/PeekingEye.tsx`: círculo branco (`bg-bg`) + pupila
+  (`bg-text`) — cores de token, não do botão em si, pra ler como
+  "olhinho" de verdade sobre qualquer variante (laranja do `Button`
+  primary, laranja do `MagneticButton`) em vez de tentar casar com cada
+  paleta.
+- A pupila olha pro lado, pausa, olha pro outro, volta ao centro,
+  descansa — nunca jitter contínuo: ~3.6s de movimento seguidos de
+  ~1.8s de pausa, em loop. Estático (sem animação) sob
+  `prefers-reduced-motion`.
+- Aplicado nos CTAs que o pedido citou por nome — CTA "Grupo do
+  WhatsApp" (`components/sections/QuerSaberMais.tsx`, dentro do
+  `MagneticButton`) e CTA "Quero fazer parte" da Capa
+  (`components/sections/Capa.tsx`, o botão principal do hero) — nos
+  dois com **duas** instâncias de `<PeekingEye />` lado a lado (um par
+  de olhos, não um só) — e depois também no CTA "Quero fazer parte" do
+  header/menu mobile (`HeaderCta`, em `components/layout/Header.tsx`,
+  as duas instâncias do componente — nav e painel mobile — herdam
+  automaticamente por serem o mesmo `Button`), com uma instância só e
+  tamanho reduzido (`size={14}` no `size="sm"` do header, `16` no
+  `size="md"` do menu mobile) já que ali o botão é mais compacto e fica
+  visível o tempo todo durante o scroll.
+- Puramente decorativo (`aria-hidden="true"` no próprio componente) —
+  nunca carrega texto nem estado que leitor de tela precise anunciar.
 
 ## Movimento — regras gerais
 
@@ -907,8 +1131,13 @@ competência do Deputado Estadual, da Prefeitura/Câmara e da União.
   cores originais") — `components/ui/MagneticButton.tsx`, só no CTA de
   WhatsApp (Instagram continua `CtaButton` normal). Dois efeitos:
   1. O botão é puxado na direção do cursor um pouco antes de ser tocado
-     (campo magnético de ~90px de raio, força limitada) — `useMotionValue`
-     + `useSpring` do motion, sobre `mousemove` do `window`.
+     (campo magnético de raio/força — `useMotionValue` + `useSpring` do
+     motion, sobre `mousemove` do `window`. ⚠ Pedido do cliente
+     ("aumente o efeito magnético do botão do WhatsApp"): raio 90px →
+     130px, força 0.35 → 0.5, deslocamento máximo 22px → 34px. Como este
+     componente só é usado no CTA de WhatsApp, os três valores puderam
+     subir direto nas constantes do arquivo, sem risco de mexer em outro
+     botão.
   2. Uma cor entra em "varredura" a partir do ponto exato onde o cursor
      entrou no botão (`clip-path: circle()` animado), trocando o texto
      de cor junto.

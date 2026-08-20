@@ -88,6 +88,25 @@ resto do site — botões, títulos, seções — usa as cores do candidato.
 Nunca misturar as duas paletas fora da logo do partido, e nunca recriar
 uma variante de cor que o kit do Avante não forneça.
 
+### Cor do WhatsApp — uso restrito
+| Token | Hex | Função |
+|---|---|---|
+| `--color-whatsapp` | `#25D366` | Verde oficial do WhatsApp. Só no ícone/badge dos CTAs que levam ao grupo. |
+| `--color-whatsapp-dark` | `#128C7E` | Verde mais escuro (também da paleta oficial do WhatsApp) — hover/fundo do selo. |
+
+⚠ **Exceção aprovada pelo cliente** — contradiz uma decisão anterior
+deste mesmo projeto. A primeira versão dos CTAs de WhatsApp usava um
+ícone genérico (`MessageCircle`/depois uma silhueta própria) só na
+paleta do candidato, com a regra explícita "nunca o verde/logo oficial
+do WhatsApp". Pedido do cliente que substitui essa regra, só pro ícone
+do WhatsApp: "o ícone do WhatsApp não é esse, quero o verdinho original
+nos dois botões que levam para o grupo" — `components/icons/WhatsAppIcon.tsx`
+passou a desenhar o selo verde real (círculo `--color-whatsapp` + glifo
+branco) em vez de herdar `currentColor` da paleta do candidato. Uso
+segue restrito ao próprio ícone/selo de WhatsApp — nunca vira cor de
+botão, fundo de seção ou qualquer outro elemento fora desse contexto
+específico (mesma lógica de "uso restrito" das cores do Avante acima).
+
 ### Verdes do mapa — uso restrito
 | Token | Hex | Função |
 |---|---|---|

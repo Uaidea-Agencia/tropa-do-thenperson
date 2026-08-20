@@ -10,6 +10,10 @@ export type Milestone = {
   quote?: string;
   text: string;
   photos: MilestonePhoto[];
+  /** Fundo full-bleed (foto + loop em traço) em vez das fotos padrão —
+   *  ver components/origem/FundoOrigem.tsx e
+   *  PROMPT_CLAUDE_CODE_INTEGRAR_ORIGEM.md. */
+  illustration?: "origem-foto";
 };
 
 export const milestones: Milestone[] = [
@@ -62,8 +66,9 @@ export const milestones: Milestone[] = [
   {
     id: "origem-politica",
     eyebrow: "Origem do desejo político",
-    text: 'Uma das filhas foi diagnosticada com câncer aos 2 anos. Foi por essa mesma época — não por causa disso, mas porque passou a acreditar em Deus — que deixou de ser ateu. Durante a pandemia, pediu apoio ao comércio local e foi ignorado pelo prefeito. Protestou sozinho, carregando um caixão nas costas com a frase "futuro do comércio". O vídeo viralizou na região.',
+    text: 'Uma das filhas foi diagnosticada com câncer aos 2 anos. Foi por essa mesma época, que deixou de ser ateu. Durante a pandemia, pediu apoio ao comércio local e foi ignorado pelo prefeito. Protestou sozinho, carregando um caixão nas costas com a frase "futuro do comércio". O vídeo viralizou na região.',
     photos: [],
+    illustration: "origem-foto",
   },
   {
     id: "preparacao",
