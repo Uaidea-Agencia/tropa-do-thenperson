@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { anton, montserrat, poppins } from "./fonts";
 import { site } from "@/content/site";
 import { CustomCursor } from "@/components/ui/CustomCursor";
@@ -31,6 +32,7 @@ export default function RootLayout({
     <html lang="pt-BR" className={`${anton.variable} ${montserrat.variable} ${poppins.variable}`}>
       <body className="font-body antialiased" suppressHydrationWarning>
         <CustomCursor>{children}</CustomCursor>
+        <SpeedInsights />
       </body>
     </html>
   );
