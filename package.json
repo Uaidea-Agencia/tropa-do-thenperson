@@ -11,6 +11,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "d3-shape": "^3.2.0",
     "git-commit-msg-linter": "^5.0.9",
